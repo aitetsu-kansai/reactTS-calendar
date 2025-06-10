@@ -20,16 +20,22 @@ const uiSlice = createSlice({
 	initialState,
 	reducers: {
 		toggleSidebar: (state, action: PayloadAction<string>) => {
-			action.payload === 'left'
-				? (state.sidebarsStatus.isLeftSidebarVisible =
-						!state.sidebarsStatus.isLeftSidebarVisible)
-				: (state.sidebarsStatus.isRightSidebarVisible =
-						!state.sidebarsStatus.isRightSidebarVisible)
+			switch (action.payload) {
+				case 'left':
+					state.sidebarsStatus.isLeftSidebarVisible =
+						!state.sidebarsStatus.isLeftSidebarVisible
+					break
+
+				case 'right':
+					state.sidebarsStatus.isRightSidebarVisible =
+						!state.sidebarsStatus.isRightSidebarVisible
+					break
+			}
 		},
 	},
 })
 
-export const {toggleSidebar} = uiSlice.actions
+export const { toggleSidebar } = uiSlice.actions
 
 export const selectSidebarsStatus = (state: RootState) =>
 	state.ui.sidebarsStatus

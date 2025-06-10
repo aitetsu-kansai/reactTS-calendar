@@ -11,8 +11,8 @@ import { toggleSidebar } from '../../redux/slices/uiSlice'
 const Header: FC = () => {
 	const dispatch = useAppDispatch()
 
-	const toggleSidebarHandler = () => {
-		dispatch(toggleSidebar('left'))
+	const toggleSidebarHandler = (direction: 'left' | 'right') => {
+		dispatch(toggleSidebar(direction))
 	}
 
 	return (
@@ -21,7 +21,7 @@ const Header: FC = () => {
 				<NavbarItem as='div' className='flex items-center justify-center'>
 					<BsLayoutSidebarInset
 						className='size-6 cursor-pointer w-20'
-						onClick={toggleSidebarHandler}
+						onClick={() => toggleSidebarHandler('left')}
 					/>
 					<Button className='text-14 rounded-full' size='md'>
 						+ Add
@@ -42,7 +42,10 @@ const Header: FC = () => {
 					startContent={<CiSearch size={18} />}
 					type='search'
 				/>
-				<BsLayoutSidebarInsetReverse className='size-6 cursor-pointer w-20' />
+				<BsLayoutSidebarInsetReverse
+					className='size-6 cursor-pointer w-20'
+					onClick={() => toggleSidebarHandler('right')}
+				/>
 			</NavbarContent>
 		</Navbar>
 	)
