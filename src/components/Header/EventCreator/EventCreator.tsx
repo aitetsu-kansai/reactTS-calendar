@@ -8,10 +8,20 @@ import {
 	useDisclosure,
 } from '@heroui/react'
 import { FC } from 'react'
+import { useAppSelector } from '../../../redux/slices/hooks'
+import { selectFormTab } from '../../../redux/slices/uiSlice'
 import EventCreatorForm from './EventCreatorForm'
 
 const EventCreator: FC = () => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
+	const currentFormTab = useAppSelector(selectFormTab)
+	const handleSubmitForm = () => {
+		if (currentFormTab === 'event') {
+			console.log('EVENT!')
+		} else {
+			console.log('NONO')
+		}
+	}
 
 	return (
 		<>
@@ -30,7 +40,7 @@ const EventCreator: FC = () => {
 								<Button color='danger' variant='flat' onPress={onClose}>
 									Close
 								</Button>
-								<Button color='success' onPress={onClose}>
+								<Button color='success' onPress={handleSubmitForm}>
 									Create
 								</Button>
 							</ModalFooter>

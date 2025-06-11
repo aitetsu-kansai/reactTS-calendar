@@ -6,12 +6,18 @@ type TypeUI = {
 		isLeftSidebarVisible: boolean
 		isRightSidebarVisible: boolean
 	}
+	tabs: {
+		activeFormTab: 'event' | 'person'
+	}
 }
 
 const initialState: TypeUI = {
 	sidebarsStatus: {
 		isLeftSidebarVisible: true,
 		isRightSidebarVisible: true,
+	},
+	tabs: {
+		activeFormTab: 'event',
 	},
 }
 
@@ -32,12 +38,26 @@ const uiSlice = createSlice({
 					break
 			}
 		},
+		toggleFormTab: (state, action: PayloadAction<string>) => {
+			switch (action.payload) {
+				case state.tabs.activeFormTab:
+					break
+				case 'event':
+					state.tabs.activeFormTab = 'event'
+					break
+
+				case 'person':
+					state.tabs.activeFormTab = 'person'
+					break
+			}
+		},
 	},
 })
 
-export const { toggleSidebar } = uiSlice.actions
+export const { toggleSidebar, toggleFormTab } = uiSlice.actions
 
 export const selectSidebarsStatus = (state: RootState) =>
 	state.ui.sidebarsStatus
+export const selectFormTab = (state:RootState) => state.ui.tabs.activeFormTab
 
 export default uiSlice.reducer
