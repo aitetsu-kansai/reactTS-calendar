@@ -1,12 +1,12 @@
-import { Button, Input, Navbar, NavbarContent, NavbarItem } from '@heroui/react'
+import { Navbar, NavbarContent, NavbarItem } from '@heroui/react'
 import { FC } from 'react'
 import {
 	BsLayoutSidebarInset,
 	BsLayoutSidebarInsetReverse,
 } from 'react-icons/bs'
-import { CiSearch } from 'react-icons/ci'
 import { useAppDispatch } from '../../redux/slices/hooks'
 import { toggleSidebar } from '../../redux/slices/uiSlice'
+import EventCreator from './EventCreator/EventCreator'
 
 const Header: FC = () => {
 	const dispatch = useAppDispatch()
@@ -23,25 +23,11 @@ const Header: FC = () => {
 						className='size-6 cursor-pointer w-20'
 						onClick={() => toggleSidebarHandler('left')}
 					/>
-					<Button className='text-14 rounded-full' size='md'>
-						+ Add
-					</Button>
+
+					<EventCreator />
 				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent as='div' className='items-center' justify='end'>
-				<Input
-					classNames={{
-						base: 'max-w-full sm:max-w-[10rem] h-10',
-						mainWrapper: 'h-full',
-						input: 'text-small',
-						inputWrapper:
-							'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
-					}}
-					placeholder='Event to search...'
-					size='md'
-					startContent={<CiSearch size={18} />}
-					type='search'
-				/>
 				<BsLayoutSidebarInsetReverse
 					className='size-6 cursor-pointer w-20'
 					onClick={() => toggleSidebarHandler('right')}

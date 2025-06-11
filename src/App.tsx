@@ -14,11 +14,10 @@ function App() {
 		<div className='h-screen w-screen overflow-x-hidden'>
 			<Header />
 			<div className='flex h-screen w-screen'>
-				{/* <LeftSidebar /> */}
 				<div
 					className={`
 						transition-all duration-300 ease-in-out overflow-hidden
-						${isLeftSidebarVisible ? 'max-w-[25%] w-1/4' : 'max-w-0 w-0'}
+						${isLeftSidebarVisible ? 'max-w-[40%] w-100' : 'max-w-0 w-0'}
 					`}
 				>
 					<LeftSidebar />
