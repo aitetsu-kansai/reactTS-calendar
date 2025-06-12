@@ -12,7 +12,6 @@ const LeftSidebar: FC = () => {
 	const isLeftSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isLeftSidebarVisible
 
-	console.log(isLeftSidebarVisible)
 	return (
 		<>
 			<div className='flex flex-col'>

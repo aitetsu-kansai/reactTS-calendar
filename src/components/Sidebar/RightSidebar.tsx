@@ -8,8 +8,6 @@ import Sidebar from './Sidebar'
 const RightSidebar: FC = () => {
 	const isRightSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isRightSidebarVisible
-
-	console.log(isRightSidebarVisible)
 	return (
 		<>
 			<div className='flex flex-col'>

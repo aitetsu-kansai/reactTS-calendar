@@ -1,30 +1,35 @@
 import { Card, CardBody, Tab, Tabs } from '@heroui/react'
-import { FC, useState } from 'react'
+import { FC, Key, useState } from 'react'
 import { useAppDispatch } from '../../../redux/slices/hooks'
 import { toggleFormTab } from '../../../redux/slices/uiSlice'
 import EventCreatorEvent from './EventCreatorEvent'
 import EventCreatorPerson from './EventCreatorPerson'
 
-const EventCreatorForm: FC = () => {
+type Props = {
+	formRef: React.RefObject<HTMLFormElement>
+}
+
+const EventCreatorForm: FC<Props> = ({ formRef }) => {
 	const [selected, setSelected] = useState<any>('event')
 
 	const dispatch = useAppDispatch()
 
-	const handleOnSelectionChange = (e: 'event' | 'person'):void => {
-		setSelected(e)
-		dispatch(toggleFormTab(e))
+	const handleOnSelectionChange = (k: Key): any => {
+		const tabKey = k as 'event' | 'person'
+		setSelected(tabKey)
+		dispatch(toggleFormTab(tabKey))
 	}
 
 	let tabs = [
 		{
 			id: 'event',
 			label: 'Event',
-			content: <EventCreatorEvent />,
+			content: <EventCreatorEvent formRef={formRef} />,
 		},
 		{
 			id: 'person',
 			label: 'Person',
-			content: <EventCreatorPerson />,
+			content: <EventCreatorPerson formRef={formRef} />,
 		},
 	]
 

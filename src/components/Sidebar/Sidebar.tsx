@@ -9,9 +9,7 @@ type TypeChildren = {
 const Sidebar: FC<TypeChildren> = ({ children, visible }) => {
 	return (
 		<div
-			className={`text-center max-w-0 h-screen transition-all duration-300 ${
-				visible ? 'max-w-100' : ''
-			}`}
+			className={`text-center max-w-0 h-screen ${visible ? 'max-w-100' : ''}`}
 		>
 			{children}
 		</div>

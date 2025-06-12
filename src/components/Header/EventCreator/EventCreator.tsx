@@ -7,20 +7,15 @@ import {
 	ModalHeader,
 	useDisclosure,
 } from '@heroui/react'
-import { FC } from 'react'
-import { useAppSelector } from '../../../redux/slices/hooks'
-import { selectFormTab } from '../../../redux/slices/uiSlice'
+import { FC, useRef } from 'react'
 import EventCreatorForm from './EventCreatorForm'
 
 const EventCreator: FC = () => {
+	const formRef = useRef<HTMLFormElement>(null!)
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
-	const currentFormTab = useAppSelector(selectFormTab)
+	// const currentFormTab = useAppSelector(selectFormTab)
 	const handleSubmitForm = () => {
-		if (currentFormTab === 'event') {
-			console.log('EVENT!')
-		} else {
-			console.log('NONO')
-		}
+		formRef.current?.requestSubmit()
 	}
 
 	return (
@@ -34,7 +29,7 @@ const EventCreator: FC = () => {
 						<>
 							<ModalHeader className='flex flex-col gap-1'>Log in</ModalHeader>
 							<ModalBody>
-								<EventCreatorForm />
+								<EventCreatorForm formRef={formRef} />
 							</ModalBody>
 							<ModalFooter>
 								<Button color='danger' variant='flat' onPress={onClose}>
