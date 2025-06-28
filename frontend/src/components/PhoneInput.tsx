@@ -1,8 +1,13 @@
 import { Input } from '@heroui/react'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 
-const PhoneInput = () => {
-	const [phone, setPhone] = useState('')
+type Props = {
+	value: any
+	onChange: any
+}
+
+const PhoneInput: FC<Props> = ({ value, onChange }) => {
+	// const [phone, setPhone] = useState('')
 	const [isValid, setIsValid] = useState(true)
 
 	const validatePhone = (value: string) => {
@@ -57,7 +62,8 @@ const PhoneInput = () => {
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const input = e.target.value
 		const formatted = formatPhone(input)
-		setPhone(formatted)
+		// setPhone(formatted)
+		onChange(e, 'phone')
 		setIsValid(validatePhone(formatted) || formatted.length === 0)
 	}
 
@@ -65,7 +71,7 @@ const PhoneInput = () => {
 		<Input
 			label='Phone number'
 			placeholder='+_ (___) ___-__-__'
-			value={phone}
+			value={value}
 			onChange={handleChange}
 			type='tel'
 			errorMessage={!isValid ? 'Enter current phone number' : undefined}

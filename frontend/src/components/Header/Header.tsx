@@ -1,4 +1,4 @@
-import { Navbar, NavbarContent, NavbarItem } from '@heroui/react'
+import { Divider, Navbar, NavbarContent, NavbarItem } from '@heroui/react'
 import { FC } from 'react'
 import {
 	BsLayoutSidebarInset,
@@ -6,6 +6,7 @@ import {
 } from 'react-icons/bs'
 import { useAppDispatch } from '../../redux/slices/hooks'
 import { toggleSidebar } from '../../redux/slices/uiSlice'
+import Contacts from './Contacts'
 import EventCreator from './EventCreator/EventCreator'
 
 const Header: FC = () => {
@@ -18,14 +19,21 @@ const Header: FC = () => {
 	return (
 		<Navbar isBordered maxWidth='full'>
 			<NavbarContent justify='start'>
-				<NavbarItem as='div' className='flex items-center justify-center'>
+				<NavbarItem as='div' className='flex items-center justify-center w-20'>
 					<BsLayoutSidebarInset
-						className='size-6 cursor-pointer w-20'
+						className='size-6 cursor-pointer'
 						onClick={() => toggleSidebarHandler('left')}
 					/>
-
-					<EventCreator />
 				</NavbarItem>
+				<NavbarItem
+					as='div'
+					className='flex items-center justify-center gap-2'
+					title='Contacts'
+				>
+					<EventCreator />
+					<Contacts />
+					<Divider orientation='vertical' />
+				</NavbarItem>{' '}
 			</NavbarContent>
 			<NavbarContent as='div' className='items-center' justify='end'>
 				<BsLayoutSidebarInsetReverse
