@@ -1,24 +1,12 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TContact, TEvent } from '../../types/events'
+import { createSlice } from '@reduxjs/toolkit'
+import { TEvent } from '../../types/events'
 
-interface EventState {
-	events: TEvent[]
-	contacts: TContact[]
-}
-
-const initialState: EventState = {
-	events: [],
-	contacts: [],
-}
+const initialState: TEvent[] = []
 
 const eventsSlice = createSlice({
 	name: 'events',
 	initialState,
-	reducers: {
-		addContact: (state, action: PayloadAction<any>) => {
-			state.contacts.push(action.payload)
-		},
-	},
+	reducers: {},
 })
 
 export default eventsSlice.reducer

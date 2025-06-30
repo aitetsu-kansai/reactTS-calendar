@@ -1,6 +1,6 @@
-import { DateInput, Form, Input } from '@heroui/react'
-import { FC, useState } from 'react'
-import { TContact } from '../../../types/events'
+import { DateInput, DateValue, Form, Input } from '@heroui/react'
+import { ChangeEvent, FC, useState } from 'react'
+import { TContactWithoutId } from '../../../types/events'
 import PhoneInput from '../../PhoneInput'
 import UploadableAvatar from './UploadableAvatar'
 
@@ -9,20 +9,24 @@ type Props = {
 }
 
 const EventCreatorPerson: FC<Props> = ({ formRef }) => {
-	const [contactData, setContactData] = useState<TContact>({
+	const [date, setDate] = useState<DateValue | null>(null)
+
+	const [contactData, setContactData] = useState<TContactWithoutId>({
 		username: '',
 		email: '',
 		phone: null,
-		date: null,
 		avatarUrl: '',
 	})
 
 	const handleOnChange = (
-		// e: ChangeEvent<HTMLInputElement>,
-		e: any,
+		e: ChangeEvent<HTMLInputElement>,
 		parameter: keyof typeof contactData
 	) => {
 		setContactData({ ...contactData, [parameter]: e.target.value })
+	}
+
+	const handleTwo= async (e:any) => {
+		const response = fetch ('https://localhost:27017/')
 	}
 
 	return (
@@ -61,8 +65,8 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 					/>
 					<PhoneInput value={contactData.phone} onChange={handleOnChange} />
 					<DateInput
-						value={contactData.date}
-						onChange={value => handleOnChange(value, 'date')}
+						value={date}
+						onChange={setDate}
 						errorMessage='Please enter a valid date'
 						label={'Birth date'}
 						name='date'
