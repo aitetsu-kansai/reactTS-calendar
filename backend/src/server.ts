@@ -1,7 +1,11 @@
 import cors from 'cors'
 import express from 'express'
-import config from './config/config'
 import path from 'path'
+import config from './config/config'
+import connectDB from './config/db'
+import contactRoutes from './routes/contactRoutes'
+
+connectDB()
 
 const app = express()
 app.use(express.json())
@@ -12,3 +16,5 @@ app.listen(config.port, () =>
 )
 
 app.use('/uploads', express.static(path.join(__dirname, './storage/public')))
+
+app.use('/contacts', contactRoutes)

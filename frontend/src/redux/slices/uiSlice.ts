@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 
-type TypeUI = {
+interface TypeUI {
 	sidebarsStatus: {
 		isLeftSidebarVisible: boolean
 		isRightSidebarVisible: boolean
@@ -58,6 +58,6 @@ export const { toggleSidebar, toggleFormTab } = uiSlice.actions
 
 export const selectSidebarsStatus = (state: RootState) =>
 	state.ui.sidebarsStatus
-export const selectFormTab = (state:RootState) => state.ui.tabs.activeFormTab
+export const selectFormTab = (state: RootState) => state.ui.tabs.activeFormTab
 
 export default uiSlice.reducer

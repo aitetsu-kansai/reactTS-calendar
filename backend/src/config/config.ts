@@ -9,8 +9,8 @@ interface Config {
 }
 
 const config: Config = {
-	port: Number(process.env.PORT) || 3000,
-	mongoUrl: String(process.env.MONGO_URL),
+	port: Number(process.env.PORT) || 5000,
+	mongoUrl: process.env.MONGO_URL || '',
 	nodeEnv: process.env.NODE_ENV || 'development',
 }
 
