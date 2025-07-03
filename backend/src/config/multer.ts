@@ -47,4 +47,4 @@ export const upload = multer({
 	storage,
 	fileFilter,
 	limits: { fileSize: 15 * (1024 * 1024), files: 1 },
-}).fields([{ name: 'personAvatar', maxCount: 1 }])
+}).single('avatarUrl')

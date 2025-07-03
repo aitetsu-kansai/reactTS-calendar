@@ -62,7 +62,6 @@ const PhoneInput: FC<Props> = ({ value, onChange }) => {
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const input = e.target.value
 		const formatted = formatPhone(input)
-		// setPhone(formatted)
 		onChange(e, 'phone')
 		setIsValid(validatePhone(formatted) || formatted.length === 0)
 	}

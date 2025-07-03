@@ -7,11 +7,32 @@ import {
 	ModalHeader,
 	useDisclosure,
 } from '@heroui/react'
-import { FC } from 'react'
+import axios from 'axios'
+import { FC, useEffect } from 'react'
 import { RiContactsLine } from 'react-icons/ri'
+import { addContact, selectContacts } from '../../redux/slices/contacts'
+import { useAppDispatch, useAppSelector } from '../../redux/slices/hooks'
 
 const Contacts: FC = () => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
+	const contacts = useAppSelector(selectContacts)
+
+	const dispatch = useAppDispatch()
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:5000/contacts/')
+			.then(res => {
+				if (res.data) {
+					res.data.forEach((el: any) => dispatch(addContact(el)))
+				} else {
+					console.error('Некорректный формат данных:', res.data)
+				}
+			})
+			.catch(error => {
+				console.error('Ошибка при загрузке контактов:', error)
+			})
+	}, [dispatch])
 
 	return (
 		<>
@@ -34,24 +55,14 @@ const Contacts: FC = () => {
 								Your contacts
 							</ModalHeader>
 							<ModalBody>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									Nullam pulvinar risus non risus hendrerit venenatis.
-									Pellentesque sit amet hendrerit risus, sed porttitor quam.
-								</p>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									Nullam pulvinar risus non risus hendrerit venenatis.
-									Pellentesque sit amet hendrerit risus, sed porttitor quam.
-								</p>
-								<p>
-									Magna exercitation reprehenderit magna aute tempor cupidatat
-									consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-									incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-									aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-									nisi consectetur esse laborum eiusmod pariatur proident Lorem
-									eiusmod et. Culpa deserunt nostrud ad veniam.
-								</p>
+								<>
+									{contacts.map(el => (
+										<div key={el.date}>
+											<h1>{el.username}</h1>
+											<img src={el.avatarUrl} />
+										</div>
+									))}
+								</>
 							</ModalBody>
 							<ModalFooter>
 								<Button color='danger' variant='flat' onPress={onClose}>

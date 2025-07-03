@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { TEvent } from '../../types/events'
+import { TEvent } from '../../../../share/types/events'
 
 const initialState: TEvent[] = []
 

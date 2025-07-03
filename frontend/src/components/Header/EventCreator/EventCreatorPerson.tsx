@@ -1,6 +1,9 @@
 import { DateInput, DateValue, Form, Input } from '@heroui/react'
+import axios from 'axios'
 import { ChangeEvent, FC, useState } from 'react'
-import { TContactWithoutId } from '../../../types/events'
+import { TContactWithTempId } from '../../../../../share/types/events'
+import { addContact } from '../../../redux/slices/contacts'
+import { useAppDispatch } from '../../../redux/slices/hooks'
 import PhoneInput from '../../PhoneInput'
 import UploadableAvatar from './UploadableAvatar'
 
@@ -9,13 +12,16 @@ type Props = {
 }
 
 const EventCreatorPerson: FC<Props> = ({ formRef }) => {
-	const [date, setDate] = useState<DateValue | null>(null)
+	const dispatch = useAppDispatch()
 
-	const [contactData, setContactData] = useState<TContactWithoutId>({
+	const [date, setDate] = useState<DateValue | null>(null)
+	const [avatarUrl, setAvatarUrl] = useState<string>('')
+	const [avatarFile, setAvatarFile] = useState<File | null>(null)
+
+	const [contactData, setContactData] = useState<TContactWithTempId>({
 		username: '',
 		email: '',
-		phone: null,
-		avatarUrl: '',
+		phone: '',
 	})
 
 	const handleOnChange = (
@@ -25,23 +31,41 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 		setContactData({ ...contactData, [parameter]: e.target.value })
 	}
 
-	const handleTwo= async (e:any) => {
-		const response = fetch ('https://localhost:27017/')
+	const handleOnSubmit = async (event: any) => {
+		event.preventDefault()
+		const data = {
+			...contactData,
+			date: date?.toString(),
+			avatarUrl: avatarFile,
+		}
+
+		const formData = new FormData()
+		for (const [key, value] of Object.entries(data)) {
+			if (value !== null && value !== undefined) formData.append(key, value)
+		}
+
+		try {
+			axios
+				.post('http://localhost:5000/contacts/', formData)
+				.then(res => dispatch(addContact(res.data)))
+				.catch(err => console.log('ERR', err))
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	return (
 		<>
 			<div className='flex flex-wrap gap-4 justify-center'>
-				<UploadableAvatar />
+				<UploadableAvatar
+					avatarUrl={avatarUrl}
+					setAvatarUrl={setAvatarUrl}
+					setAvatarFile={setAvatarFile}
+				/>
 				<Form
 					ref={formRef}
 					className='w-full flex flex-col gap-4'
-					onSubmit={e => {
-						e.preventDefault()
-						const data = Object.fromEntries(new FormData(e.currentTarget))
-						console.log('Submitted data:', data)
-						console.log(contactData)
-					}}
+					onSubmit={handleOnSubmit}
 				>
 					<Input
 						value={contactData.username}

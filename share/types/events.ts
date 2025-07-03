@@ -1,5 +1,3 @@
-import { DateValue } from '@heroui/react'
-
 export type TEvent = {
 	id: string
 	description: string
@@ -8,14 +6,15 @@ export type TEvent = {
 	endEventTime: `${number}:${number}:${number}`
 }
 
-export type TContactWithoutId = {
+export type TContactWithTempId = {
 	username: string
 	email: string
 	phone?: string | null
-	date?: null | DateValue
-	avatarUrl?: string
+	date?: null | string
+	// avatarUrl?: string
+	avatarUrl?: any
 }
 
 export type TContact = {
 	id: string
-} & TContactWithoutId
+} & TContactWithTempId

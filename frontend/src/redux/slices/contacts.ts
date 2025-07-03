@@ -1,22 +1,23 @@
-import { Action, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { TContact } from '../../types/events'
-import { RootState } from '@reduxjs/toolkit/query'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { TContact, TContactWithTempId } from '../../../../share/types/events'
+import { RootState } from '../store'
 
-const initialState: TContact[] = []
+const initialState: (TContactWithTempId | TContact)[] = []
 
 const contactsSlice = createSlice({
 	name: 'contacts',
 	initialState,
 	reducers: {
-		addContact: (state, action:PayloadAction<TContact>) => {
-			if (action.payload){
-
+		addContact: (state, action: PayloadAction<TContactWithTempId>) => {
+			if (action.payload) {
+				state.push(action.payload)
 			}
-		}
+		},
 	},
 })
 
-// export {} = contactsSlice.actions
+export const { addContact } = contactsSlice.actions
 
+export const selectContacts = (state: RootState) => state.contacts
 
 export default contactsSlice.reducer

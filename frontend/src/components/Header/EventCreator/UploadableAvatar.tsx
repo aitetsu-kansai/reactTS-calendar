@@ -1,11 +1,20 @@
 import { Avatar } from '@heroui/react'
-import { useRef, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { BiUpload } from 'react-icons/bi'
 import { MdOutlineRemoveCircleOutline } from 'react-icons/md'
 
-const UploadableAvatar = () => {
-	const [imgUrl, setImgUrl] = useState<string>('')
+type TProps = {
+	avatarUrl: string
+	setAvatarUrl: (params: string) => void
+	setAvatarFile: (params: File | null) => void
+}
 
+const UploadableAvatar: FC<TProps> = ({
+	avatarUrl,
+	setAvatarUrl,
+	setAvatarFile,
+}) => {
+	const [av, setAv] = useState<any>()
 	const uploadImage = async (e: any) => {
 		const data = new FormData()
 		const file = e.target.files[0]
@@ -20,7 +29,8 @@ const UploadableAvatar = () => {
 					}
 				)
 				if (res.ok) {
-					const result: any = await res.json()
+					const result = await res.json()
+					setAvatarFile(file)
 					console.log(result)
 				}
 			} catch (error) {
@@ -37,20 +47,26 @@ const UploadableAvatar = () => {
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
-			setImgUrl(URL.createObjectURL(file))
+			setAvatarUrl(URL.createObjectURL(file))
+			setAvatarFile(file)
 		}
-		console.log(imgUrl)
+		console.log(avatarUrl)
+	}
+
+	const handleResetAvatar = () => {
+		setAvatarUrl('')
+		setAvatarFile(null)
 	}
 
 	return (
 		<div className='relative w-45 h-45 group'>
-			<Avatar className='w-45 h-45 text-large object-cover' src={imgUrl} />
+			<Avatar className='w-45 h-45 text-large object-cover' src={avatarUrl} />
 
 			<div className='absolute inset-0 bg-black bg-opacity-40 rounded-full flex flex-col items-center justify-around opacity-0 group-hover:opacity-60 transition-opacity duration-300 cursor-pointer'>
-				{imgUrl !== '' && (
+				{avatarUrl !== '' && (
 					<MdOutlineRemoveCircleOutline
 						className='text-white w-6 h-6  hover:scale-110 transition-all duration-150 ease-in'
-						onClick={() => setImgUrl('')}
+						onClick={handleResetAvatar}
 					/>
 				)}
 				<BiUpload
@@ -64,7 +80,7 @@ const UploadableAvatar = () => {
 				type='file'
 				accept='image/*'
 				className='hidden'
-				onChange={uploadImage}
+				onChange={handleFileChange}
 			/>
 		</div>
 	)
