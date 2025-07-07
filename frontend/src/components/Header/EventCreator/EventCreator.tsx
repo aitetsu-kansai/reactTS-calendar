@@ -37,9 +37,6 @@ const EventCreator: FC = () => {
 								<EventCreatorForm formRef={formRef} />
 							</ModalBody>
 							<ModalFooter>
-								<Button color='danger' variant='flat' onPress={onClose}>
-									Close
-								</Button>
 								<Button variant='flat' onPress={handleSubmitForm}>
 									Create
 								</Button>

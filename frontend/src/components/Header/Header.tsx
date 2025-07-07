@@ -6,7 +6,7 @@ import {
 } from 'react-icons/bs'
 import { useAppDispatch } from '../../redux/slices/hooks'
 import { toggleSidebar } from '../../redux/slices/uiSlice'
-import Contacts from './Contacts'
+import Contacts from './Contacts/Contacts'
 import EventCreator from './EventCreator/EventCreator'
 
 const Header: FC = () => {

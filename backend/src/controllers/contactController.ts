@@ -54,12 +54,15 @@ export const createContact = async (req: Request, res: any) => {
 			const newContact = new Contact({
 				...contactData,
 				id: generateRandomId(),
-				avatarUrl: `http://localhost:5000/uploads/${req.file?.filename}`,
+				avatarUrl: req.file
+					? `http://localhost:5000/uploads/${req.file?.filename}`
+					: '',
 			})
 			console.log(req.file?.filename)
 			await newContact.save()
 			res.status(201).json(newContact)
 		} catch (error) {
+			
 			res.status(500).json({ message: 'Server error', error })
 		}
 	})
