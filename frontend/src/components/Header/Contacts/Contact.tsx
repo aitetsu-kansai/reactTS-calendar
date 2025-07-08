@@ -2,16 +2,22 @@ import { Button, Link, User } from '@heroui/react'
 import { FC } from 'react'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { TContact } from '../../../../../share/types/events'
+import { deleteContact } from '../../../redux/slices/contacts'
+import { useAppDispatch } from '../../../redux/slices/hooks'
 
 type TProps = {
 	data: TContact
 }
 
 const Contact: FC<TProps> = ({ data }) => {
-	console.log(data)
+	const dispatch = useAppDispatch()
+	const handleOnClick = (id: string) => {
+		dispatch(deleteContact(id))
+	}
 	return (
 		<div className='flex'>
 			<User
+				name={data.username}
 				className='flex justify-start w-full'
 				avatarProps={{ src: data.avatarUrl, size: 'lg' }}
 				description={
@@ -28,6 +34,7 @@ const Contact: FC<TProps> = ({ data }) => {
 				radius='full'
 				size='md'
 				title='Delete the contact'
+				onPress={() => handleOnClick(data.id)}
 			>
 				<FaRegTrashAlt />
 			</Button>

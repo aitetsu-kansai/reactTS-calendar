@@ -9,19 +9,19 @@ import {
 } from '@heroui/react'
 import { FC, useEffect } from 'react'
 import { RiContactsLine } from 'react-icons/ri'
-import { selectContacts } from '../../../redux/slices/contacts'
+import { TContact } from '../../../../../share/types/events'
+import { fetchContacts, selectContacts } from '../../../redux/slices/contacts'
 import { useAppDispatch, useAppSelector } from '../../../redux/slices/hooks'
-import { fetchContacts } from '../../../utils/api'
 import Contact from './Contact'
 
 const Contacts: FC = () => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
-	const contacts = useAppSelector(selectContacts)
+	const contacts: TContact[] = useAppSelector(selectContacts)
 
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		fetchContacts(dispatch)
+		dispatch(fetchContacts('http://localhost:5000/contacts/'))
 	}, [dispatch])
 
 	return (

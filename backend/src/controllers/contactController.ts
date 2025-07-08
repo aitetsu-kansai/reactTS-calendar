@@ -34,7 +34,10 @@ export const uploadPersonAvatar = (req: Request, res: Response) => {
 	})
 }
 
-export const createContact = async (req: Request, res: any) => {
+export const createContact = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
 	upload(req, res, async function (error) {
 		if (error instanceof multer.MulterError) {
 			if (error.code === 'LIMIT_FILE_SIZE') {
@@ -58,21 +61,40 @@ export const createContact = async (req: Request, res: any) => {
 					? `http://localhost:5000/uploads/${req.file?.filename}`
 					: '',
 			})
-			console.log(req.file?.filename)
 			await newContact.save()
 			res.status(201).json(newContact)
 		} catch (error) {
-			
 			res.status(500).json({ message: 'Server error', error })
 		}
 	})
 }
 
-export const getContacts = async (req: Request, res: Response) => {
+export const getContacts = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
 	try {
 		const contacts = await Contact.find()
 		res.json(contacts)
 	} catch (error) {
 		res.status(500).json({ message: 'Server error', error })
+	}
+}
+
+export const deleteContact = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
+	try {
+		const contactId = req.params.id
+		const contactToDelete = await Contact.findOneAndDelete({ id: contactId })
+
+		if (!contactToDelete) {
+			res.status(400).json({ error: 'The contact is not found' })
+			return
+		}
+		res.json({ message: 'The contact deleted', contactToDelete })
+	} catch (error) {
+		res.status(500).json({ error: 'Contact deletion error' })
 	}
 }
