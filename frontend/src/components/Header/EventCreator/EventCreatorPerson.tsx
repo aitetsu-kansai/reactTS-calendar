@@ -2,8 +2,9 @@ import { DateInput, DateValue, Form, Input } from '@heroui/react'
 import axios from 'axios'
 import { ChangeEvent, FC, useState } from 'react'
 import { TContactWithTempId } from '../../../../../share/types/events'
-import { addContact } from '../../../redux/slices/contacts'
+import { addContact } from '../../../redux/slices/contactsSlice'
 import { useAppDispatch } from '../../../redux/slices/hooks'
+import { showInfo } from '../../../utils/showInfo'
 import PhoneInput from '../../PhoneInput'
 import UploadableAvatar from './UploadableAvatar'
 
@@ -45,12 +46,20 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 		}
 
 		try {
-			axios
-				.post('http://localhost:5000/contacts/', formData)
-				.then(res => dispatch(addContact(res.data)))
-				.catch(err => console.log('ERR', err))
+			const res = await axios.post('http://localhost:5000/contacdts/', formData)
+			dispatch(addContact(res.data))
+
+			showInfo(
+				{ infoMessage: 'The contact was added', infoType: 'success' },
+				dispatch
+			)
+
+			setContactData({ username: '', email: '', phone: '' })
 		} catch (error) {
-			console.log(error)
+			showInfo(
+				{ infoMessage: `Something went wrong: ${error}`, infoType: 'danger' },
+				dispatch
+			)
 		}
 	}
 

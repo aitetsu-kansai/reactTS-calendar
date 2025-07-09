@@ -2,7 +2,7 @@ import { Button, Link, User } from '@heroui/react'
 import { FC } from 'react'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { TContact } from '../../../../../share/types/events'
-import { deleteContact } from '../../../redux/slices/contacts'
+import { deleteContact } from '../../../redux/slices/contactsSlice'
 import { useAppDispatch } from '../../../redux/slices/hooks'
 
 type TProps = {

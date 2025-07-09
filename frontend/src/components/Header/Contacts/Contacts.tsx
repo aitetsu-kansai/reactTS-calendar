@@ -10,7 +10,10 @@ import {
 import { FC, useEffect } from 'react'
 import { RiContactsLine } from 'react-icons/ri'
 import { TContact } from '../../../../../share/types/events'
-import { fetchContacts, selectContacts } from '../../../redux/slices/contacts'
+import {
+	fetchContacts,
+	selectContacts,
+} from '../../../redux/slices/contactsSlice'
 import { useAppDispatch, useAppSelector } from '../../../redux/slices/hooks'
 import Contact from './Contact'
 

@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TContact } from '../../../../share/types/events'
+import { showInfo } from '../../utils/showInfo'
 import { RootState } from '../store'
 
 export const fetchContacts = createAsyncThunk<TContact[], string>(
 	'contacts/fetchContacts',
-	async (url: string, { rejectWithValue }) => {
+	async (url: string, { rejectWithValue, dispatch }) => {
 		try {
 			const res = await axios.get<TContact[]>(url)
 			if (res.data) {
@@ -14,6 +15,13 @@ export const fetchContacts = createAsyncThunk<TContact[], string>(
 				return rejectWithValue('Unknown error')
 			}
 		} catch (error: any) {
+			showInfo(
+				{
+					infoType: 'danger',
+					infoMessage: `Something went wrong: ${error}`,
+				},
+				dispatch
+			)
 			return rejectWithValue(error.message || 'Unknown error')
 		}
 	}
