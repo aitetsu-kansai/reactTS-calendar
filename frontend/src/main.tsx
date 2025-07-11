@@ -9,7 +9,11 @@ import store from './redux/store.js'
 
 createRoot(document.getElementById('root')!).render(
 	<HeroUIProvider>
-		<ToastProvider placement='top-center' toastOffset={60} />
+		<ToastProvider
+			placement='top-center'
+			toastOffset={60}
+			toastProps={{ timeout: 2500, shouldShowTimeoutProgress: true, hideCloseButton:false }}
+		/>
 		<NextThemesProvider defaultTheme='dark' attribute='class'>
 			<Provider store={store}>
 				<StrictMode>

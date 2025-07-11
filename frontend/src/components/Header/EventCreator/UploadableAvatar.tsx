@@ -1,5 +1,5 @@
 import { Avatar } from '@heroui/react'
-import { FC, useRef, useState } from 'react'
+import { FC, useRef } from 'react'
 import { BiUpload } from 'react-icons/bi'
 import { MdOutlineRemoveCircleOutline } from 'react-icons/md'
 
@@ -14,31 +14,6 @@ const UploadableAvatar: FC<TProps> = ({
 	setAvatarUrl,
 	setAvatarFile,
 }) => {
-	const [av, setAv] = useState<any>()
-	const uploadImage = async (e: any) => {
-		const data = new FormData()
-		const file = e.target.files[0]
-		data.append('personAvatar', file)
-		if (file) {
-			try {
-				const res = await fetch(
-					'http://localhost:5000/contacts/uploadPersonAvatar',
-					{
-						method: 'POST',
-						body: data,
-					}
-				)
-				if (res.ok) {
-					const result = await res.json()
-					setAvatarFile(file)
-					console.log(result)
-				}
-			} catch (error) {
-				console.log('error', error)
-			}
-		}
-	}
-
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const handleClick = () => {
 		fileInputRef.current?.click()

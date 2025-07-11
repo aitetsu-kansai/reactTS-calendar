@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { TContact } from '../../../../share/types/events'
+import { BASE_URL, CONTACTS_ENDPOINT } from '../../constants/config'
 import { showInfo } from '../../utils/showInfo'
 import { RootState } from '../store'
 
@@ -29,10 +30,11 @@ export const fetchContacts = createAsyncThunk<TContact[], string>(
 
 export const deleteContact = createAsyncThunk<string, string>(
 	'contacts/deleteContact',
-	async (id: string, { rejectWithValue }) => {
+	async (id, { rejectWithValue, signal }) => {
 		try {
 			const res = await axios.delete<string>(
-				`http://localhost:5000/contacts/${id}`
+				`${BASE_URL}${CONTACTS_ENDPOINT}${id}`,
+				{ signal }
 			)
 			if (!res.data) {
 				return rejectWithValue("Can't delete contact. Server error.")
@@ -72,6 +74,9 @@ const contactsSlice = createSlice({
 			builder.addCase(deleteContact.fulfilled, (state, action) => {
 				return state.filter(contact => contact.id !== action.payload)
 			})
+		builder.addCase(deleteContact.rejected, () => {
+			console.log('rejected')
+		})
 	},
 })
 

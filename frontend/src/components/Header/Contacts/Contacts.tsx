@@ -1,4 +1,5 @@
 import {
+	Alert,
 	Button,
 	Modal,
 	ModalBody,
@@ -10,6 +11,7 @@ import {
 import { FC, useEffect } from 'react'
 import { RiContactsLine } from 'react-icons/ri'
 import { TContact } from '../../../../../share/types/events'
+import { BASE_URL, CONTACTS_ENDPOINT } from '../../../constants/config'
 import {
 	fetchContacts,
 	selectContacts,
@@ -24,7 +26,7 @@ const Contacts: FC = () => {
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		dispatch(fetchContacts('http://localhost:5000/contacts/'))
+		dispatch(fetchContacts(`${BASE_URL}${CONTACTS_ENDPOINT}`))
 	}, [dispatch])
 
 	return (
@@ -40,7 +42,12 @@ const Contacts: FC = () => {
 				<RiContactsLine />
 			</Button>
 
-			<Modal isOpen={isOpen} onOpenChange={onOpenChange} size='2xl'>
+			<Modal
+				isOpen={isOpen}
+				onOpenChange={onOpenChange}
+				size='2xl'
+				scrollBehavior='inside'
+			>
 				<ModalContent>
 					{onClose => (
 						<>
@@ -49,6 +56,14 @@ const Contacts: FC = () => {
 							</ModalHeader>
 							<ModalBody>
 								<>
+									{contacts.length === 0 && (
+										<div className='w-full flex items-center my-3'>
+											<Alert
+												variant='bordered'
+												title={`You don't have any contacts`}
+											/>
+										</div>
+									)}
 									{contacts.map(el => (
 										<div key={el.id}>
 											<Contact data={el} />

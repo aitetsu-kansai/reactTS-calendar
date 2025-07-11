@@ -2,6 +2,7 @@ import { DateInput, DateValue, Form, Input } from '@heroui/react'
 import axios from 'axios'
 import { ChangeEvent, FC, useState } from 'react'
 import { TContactWithTempId } from '../../../../../share/types/events'
+import { BASE_URL, CONTACTS_ENDPOINT } from '../../../constants/config'
 import { addContact } from '../../../redux/slices/contactsSlice'
 import { useAppDispatch } from '../../../redux/slices/hooks'
 import { showInfo } from '../../../utils/showInfo'
@@ -46,7 +47,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 		}
 
 		try {
-			const res = await axios.post('http://localhost:5000/contacdts/', formData)
+			const res = await axios.post(`${BASE_URL}${CONTACTS_ENDPOINT}`, formData)
 			dispatch(addContact(res.data))
 
 			showInfo(

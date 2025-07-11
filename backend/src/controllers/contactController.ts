@@ -85,16 +85,27 @@ export const deleteContact = async (
 	req: Request,
 	res: Response
 ): Promise<void> => {
-	try {
-		const contactId = req.params.id
-		const contactToDelete = await Contact.findOneAndDelete({ id: contactId })
-
-		if (!contactToDelete) {
-			res.status(400).json({ error: 'The contact is not found' })
-			return
+	let aborted = false
+	req.on('close', () => {
+		if (!res.writableEnded) {
+			aborted = true
+			console.log('DELETE request ignored, aborted by user')
 		}
-		res.json({ message: 'The contact deleted', contactToDelete })
-	} catch (error) {
-		res.status(500).json({ error: 'Contact deletion error' })
-	}
+	})
+	setTimeout(async () => {
+		if (aborted) return
+		try {
+			const contactId = req.params.id
+			const contactToDelete = await Contact.findOneAndDelete({ id: contactId })
+			console.log(contactToDelete)
+
+			if (!contactToDelete) {
+				res.status(400).json({ error: 'The contact is not found' })
+				return
+			}
+			res.json({ message: 'The contact deleted', contactToDelete })
+		} catch (error) {
+			res.status(500).json({ error: 'Contact deletion error' })
+		}
+	}, 2500)
 }
