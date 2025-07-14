@@ -11,9 +11,11 @@ export type TContactWithTempId = {
 	email: string
 	phone?: string | null
 	date?: null | string
-	// avatarUrl?: string
-	avatarUrl?: any
+	avatarUrl?: string
+	
 }
+
+
 
 export type TContact = {
 	id: string

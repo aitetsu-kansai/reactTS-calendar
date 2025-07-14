@@ -1,16 +1,26 @@
-import { Button, Link, User } from '@heroui/react'
+import {
+	Button,
+	Card,
+	CardBody,
+	Link,
+	useDisclosure,
+	User,
+} from '@heroui/react'
 import { FC, useRef, useState } from 'react'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { TContact } from '../../../../../share/types/events'
 import { deleteContact } from '../../../redux/slices/contactsSlice'
 import { useAppDispatch } from '../../../redux/slices/hooks'
 import { showInfo } from '../../../utils/showInfo'
+import ContactPage from './ContactPage'
 
 type TProps = {
 	data: TContact
 }
 
 const Contact: FC<TProps> = ({ data }) => {
+	const { isOpen, onOpen, onClose } = useDisclosure()
+
 	const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
 	const dispatch = useAppDispatch()
@@ -41,42 +51,53 @@ const Contact: FC<TProps> = ({ data }) => {
 	}
 
 	const cancelRequest = () => {
-		console.log(deleteContactRef)
-		console.log(typeof deleteContactRef)
 		if (deleteContactRef.current) {
 			deleteContactRef.current.abort()
 		}
 		setIsDeleting(false)
 	}
 
+	
+
+	console.log(data.avatarUrl)
+
 	return (
-		<div
-			className={`flex transition-opacity ease-in-out delay-100 ${
-				isDeleting && 'opacity-50'
-			}`}
-		>
-			<User
-				name={data.username}
-				className='flex justify-start w-full'
-				avatarProps={{ src: data.avatarUrl, size: 'lg' }}
-				description={
-					<Link isExternal href='#' size='sm' target='_blank'>
-						{data.email ? data.email : data.phone ? data.phone : ''}
-					</Link>
-				}
-			/>
-			<Button
-				className='border-1'
-				isIconOnly
-				variant='bordered'
-				color='danger'
-				radius='full'
-				size='md'
-				title='Delete the contact'
-				onPress={() => handleOnClick(data.id)}
-			>
-				<FaRegTrashAlt />
-			</Button>
+		<div>
+			<Card className={`${isDeleting && 'opacity-50'}`}>
+				<CardBody>
+					<div className='flex justify-center items-center '>
+						<User
+							name={data.username}
+							onClick={onOpen}
+							className='flex justify-start w-full cursor-pointer'
+							avatarProps={{ src: data.avatarUrl, size: 'lg' }}
+							description={
+								<Link isExternal href='#' size='sm' target='_blank'>
+									{data.email ? data.email : data.phone ? data.phone : ''}
+								</Link>
+							}
+						/>
+						<Button
+							className='border-1'
+							isIconOnly
+							variant='bordered'
+							color='danger'
+							radius='full'
+							size='md'
+							title='Delete the contact'
+							onPress={() => handleOnClick(data.id)}
+						>
+							<FaRegTrashAlt />
+						</Button>
+						<ContactPage
+							onClose={onClose}
+							isOpen={isOpen}
+							onOpen={onOpen}
+							data={data}
+						/>
+					</div>
+				</CardBody>
+			</Card>
 		</div>
 	)
 }
