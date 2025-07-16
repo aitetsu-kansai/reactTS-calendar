@@ -8,18 +8,22 @@ import {
 	DrawerHeader,
 } from '@heroui/react'
 import { FC } from 'react'
+import { LiaBirthdayCakeSolid } from 'react-icons/lia'
+import { MdOutlineAlternateEmail } from 'react-icons/md'
 import { TContact } from '../../../../../share/types/events'
 import ContactPageAvatar from './ContactPageAvatar'
+import ContactsListElement from './ContactsListElement'
+
+import { MdOutlinePhone } from 'react-icons/md'
 
 type TProps = {
 	isOpen: boolean
 	onClose: () => void
-	onOpen: () => void
 	data: TContact
 }
 
-const ContactPage: FC<TProps> = ({ isOpen, onClose, onOpen, data }) => {
-	const { username, email, phone, date, avatarUrl } = data
+const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
+	const { username, email, phone, date, avatar } = data
 
 	return (
 		<Drawer isOpen={isOpen} onClose={onClose} size='md'>
@@ -28,28 +32,32 @@ const ContactPage: FC<TProps> = ({ isOpen, onClose, onOpen, data }) => {
 					<>
 						<DrawerHeader>Contact info</DrawerHeader>
 						<DrawerBody>
-							<ContactPageAvatar avatarUrl={avatarUrl} username={username} />
+							<ContactPageAvatar avatar={avatar} username={username} />
 							{(email || phone || date) && (
 								<Card>
 									<CardBody>
 										<ul>
 											{email && (
-												<li>
-													<span className='font-bold'>Email:</span> {email}
-												</li>
+												<ContactsListElement
+													icon={<MdOutlineAlternateEmail />}
+													title='Email'
+													titleData={email}
+												/>
 											)}
 											{date && (
-												<li>
-													<span className='font-bold'>Birth date:</span> {date}
-												</li>
+												<ContactsListElement
+													icon={<LiaBirthdayCakeSolid />}
+													title='Birthday'
+													titleData={date}
+												/>
 											)}
 											{phone && (
-												<li>
-													<span className='font-bold'>Phone number:</span>{' '}
-													{phone})
-												</li>
+												<ContactsListElement
+													icon={<MdOutlinePhone />}
+													title='Phone number'
+													titleData={phone}
+												/>
 											)}
-											<li></li>
 										</ul>
 									</CardBody>
 								</Card>

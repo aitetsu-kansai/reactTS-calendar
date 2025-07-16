@@ -14,9 +14,7 @@ export const uploadPersonAvatar = (req: Request, res: Response) => {
 					.json({ message: 'Image is too large. Maximum size is 15MB' })
 			}
 			return res.status(400).send({ message: error.message })
-		} else if (error) {
 			return res
-				.status(500)
 				.send({ message: 'Server error during file upload' })
 		}
 

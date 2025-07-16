@@ -27,9 +27,10 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 	})
 
 	const handleOnChange = (
-		e: ChangeEvent<HTMLInputElement>,
+		e: ChangeEvent<HTMLInputElement | any>,
 		parameter: keyof typeof contactData
 	) => {
+		console.log(e.target.value)
 		setContactData({ ...contactData, [parameter]: e.target.value })
 	}
 
@@ -38,7 +39,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 		const data = {
 			...contactData,
 			date: date?.toString(),
-			avatarUrl: avatarFile,
+			avatar: avatarFile,
 		}
 
 		const formData = new FormData()
@@ -97,7 +98,12 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 						placeholder={`Enter person's email`}
 						type='email'
 					/>
-					<PhoneInput value={contactData.phone} onChange={handleOnChange} />
+					<PhoneInput
+						value={contactData.phone}
+						onChange={newValue =>
+							setContactData({ ...contactData, phone: newValue })
+						}
+					/>
 					<DateInput
 						value={date}
 						onChange={setDate}

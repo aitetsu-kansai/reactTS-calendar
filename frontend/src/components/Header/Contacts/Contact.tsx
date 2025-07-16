@@ -20,17 +20,13 @@ type TProps = {
 
 const Contact: FC<TProps> = ({ data }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
-
 	const [isDeleting, setIsDeleting] = useState<boolean>(false)
-
 	const dispatch = useAppDispatch()
-
 	const deleteContactRef = useRef<{ abort: () => void } | null>(null)
 
 	const handleOnClick = (id: string) => {
 		try {
 			deleteContactRef.current = dispatch(deleteContact(id))
-
 			setIsDeleting(true)
 			showInfo(
 				{ infoType: 'danger', infoMessage: 'The contact was deleted' },
@@ -57,10 +53,6 @@ const Contact: FC<TProps> = ({ data }) => {
 		setIsDeleting(false)
 	}
 
-	
-
-	console.log(data.avatarUrl)
-
 	return (
 		<div>
 			<Card className={`${isDeleting && 'opacity-50'}`}>
@@ -70,7 +62,7 @@ const Contact: FC<TProps> = ({ data }) => {
 							name={data.username}
 							onClick={onOpen}
 							className='flex justify-start w-full cursor-pointer'
-							avatarProps={{ src: data.avatarUrl, size: 'lg' }}
+							avatarProps={{ src: data.avatar, size: 'lg' }}
 							description={
 								<Link isExternal href='#' size='sm' target='_blank'>
 									{data.email ? data.email : data.phone ? data.phone : ''}
@@ -89,12 +81,7 @@ const Contact: FC<TProps> = ({ data }) => {
 						>
 							<FaRegTrashAlt />
 						</Button>
-						<ContactPage
-							onClose={onClose}
-							isOpen={isOpen}
-							onOpen={onOpen}
-							data={data}
-						/>
+						<ContactPage onClose={onClose} isOpen={isOpen} data={data} />
 					</div>
 				</CardBody>
 			</Card>

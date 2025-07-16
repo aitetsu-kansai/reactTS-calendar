@@ -25,7 +25,6 @@ const UploadableAvatar: FC<TProps> = ({
 			setAvatarUrl(URL.createObjectURL(file))
 			setAvatarFile(file)
 		}
-		console.log(avatarUrl)
 	}
 
 	const handleResetAvatar = () => {

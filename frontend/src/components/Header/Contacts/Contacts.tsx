@@ -1,14 +1,18 @@
 import {
 	Alert,
 	Button,
+	Input,
 	Modal,
 	ModalBody,
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
+	Select,
+	SelectItem,
 	useDisclosure,
 } from '@heroui/react'
 import { FC, useEffect } from 'react'
+import { CiSearch } from 'react-icons/ci'
 import { RiContactsLine } from 'react-icons/ri'
 import { TContact } from '../../../../../share/types/events'
 import { BASE_URL, CONTACTS_ENDPOINT } from '../../../constants/config'
@@ -52,7 +56,31 @@ const Contacts: FC = () => {
 					{onClose => (
 						<>
 							<ModalHeader className='flex flex-col gap-1'>
-								Your contacts
+								<p>Your contacts ({contacts.length})</p>
+								<div className='flex gap-20'>
+									<Input
+										classNames={{
+											base: 'max-w-full text-center mx-auto pt-5',
+											mainWrapper: 'h-full',
+											input: 'text-small',
+											inputWrapper:
+												'h-full font-normal text-default-500 bg-default-400/20',
+										}}
+										placeholder='Contact to search...'
+										size='md'
+										startContent={<CiSearch size={18} />}
+										type='search'
+									/>
+									<Select
+										className='w-xs'
+										placeholder='Select a category'
+									>
+										<SelectItem>Username</SelectItem>
+										<SelectItem>Email</SelectItem>
+										<SelectItem>Date</SelectItem>
+
+									</Select>
+								</div>
 							</ModalHeader>
 							<ModalBody>
 								<>

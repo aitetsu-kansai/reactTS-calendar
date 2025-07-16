@@ -2,12 +2,12 @@ import { Avatar, Button, Card, CardFooter } from '@heroui/react'
 import { FC } from 'react'
 
 type TProps = {
-	avatarUrl: string | undefined
+	avatar: string | undefined
 	username: string
 	onClick?: () => void
 }
 
-const ContactPageAvatar: FC<TProps> = ({ avatarUrl, username }) => {
+const ContactPageAvatar: FC<TProps> = ({ avatar, username }) => {
 	return (
 		<Card
 			isFooterBlurred
@@ -19,8 +19,9 @@ const ContactPageAvatar: FC<TProps> = ({ avatarUrl, username }) => {
 				className='w-68 h-68 text-large object-cover'
 				radius='lg'
 				alt='User avatar'
-				src={avatarUrl && avatarUrl}
+				src={avatar && avatar}
 			/>
+
 			{/* <Image
 				className='object-cover'
 				width={270}
@@ -41,7 +42,7 @@ const ContactPageAvatar: FC<TProps> = ({ avatarUrl, username }) => {
 					size='sm'
 					variant='flat'
 				>
-					Write
+					WRITE
 				</Button>
 			</CardFooter>
 		</Card>
