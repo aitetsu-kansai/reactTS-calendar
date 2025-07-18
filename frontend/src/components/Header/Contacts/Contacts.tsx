@@ -20,18 +20,28 @@ import { useAppDispatch, useAppSelector } from '../../../redux/slices/hooks'
 import Contact from './Contact'
 import ContactsFilter from './ContactsFilter'
 
+type TFilterCategory = keyof TContact | ''
+
 const Contacts: FC = () => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const contacts: TContact[] = useAppSelector(selectContacts)
 
 	const [filterText, setFilterText] = useState<string>('')
-	const [filterCategory, setFilterCategory] = useState<keyof TContact | ''>('')
+	const [filterCategory, setFilterCategory] = useState<TFilterCategory>('')
+
+	const [sortCategory, setSortCategory] = useState<string>('')
 
 	const dispatch = useAppDispatch()
 
-	const getContactProperty = (contact: TContact, key: keyof TContact) => {
+	const getContactProperty = (
+		contact: TContact,
+		key: keyof TContact
+	): TContact[keyof TContact] => {
 		return contact[key]
 	}
+
+	const getValue = (contact: TContact, key: keyof TContact) =>
+		getContactProperty(contact, key) ?? ''
 
 	useEffect(() => {
 		dispatch(fetchContacts(`${BASE_URL}${CONTACTS_ENDPOINT}`))
@@ -67,6 +77,8 @@ const Contacts: FC = () => {
 									setFilterText={setFilterText}
 									filterCategory={filterCategory}
 									setFilterCategory={setFilterCategory}
+									sortCategory={sortCategory}
+									setSortCategory={setSortCategory}
 								/>
 							</ModalHeader>
 							<ModalBody>
@@ -82,10 +94,29 @@ const Contacts: FC = () => {
 									{contacts
 										.filter(el => {
 											if (!filterCategory || !filterText) return true
-											const value = getContactProperty(el, filterCategory)
+											const value = getValue(el, filterCategory)
 											return String(value).includes(filterText)
 										})
+										.sort((a: TContact, b: TContact): number => {
+											if (!sortCategory) return 0
 
+											if (sortCategory.includes('alphabet')) {
+												const aVal = getValue(a, 'username')
+												const bVal = getValue(b, 'username')
+												return sortCategory === 'alphabetDesc'
+													? aVal.localeCompare(bVal)
+													: bVal.localeCompare(aVal)
+											}
+
+											if (sortCategory.includes('dateAdded')) {
+												const aDate = new Date(getValue(a, 'dateAdded'))
+												const bDate = new Date(getValue(b, 'dateAdded'))
+												const diff = aDate.getTime() - bDate.getTime()
+												return sortCategory === 'dateAddedDesc' ? diff : -diff
+											}
+
+											return 0
+										})
 										.map(el => (
 											<div key={el.id}>
 												<Contact data={el} />

@@ -12,7 +12,7 @@ export type TContactWithTempId = {
 	phone?: string | null
 	date?: string | null
 	avatar?: string | undefined
-	dateAdded?: string
+	dateAdded: string
 }
 
 export type TContact = {
