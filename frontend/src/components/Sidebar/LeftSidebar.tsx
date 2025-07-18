@@ -1,13 +1,13 @@
 import type { DateValue } from '@heroui/react'
 import { Calendar, Divider } from '@heroui/react'
-import { getLocalTimeZone, today } from '@internationalized/date'
 import { FC, useState } from 'react'
 import { useAppSelector } from '../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../redux/slices/uiSlice'
+import { getDate } from '../../utils/getDate'
 import Sidebar from './Sidebar'
 
 const LeftSidebar: FC = () => {
-	const defaultDate = today(getLocalTimeZone())
+	const defaultDate = getDate()
 	const [focusedDate, setFocusedDate] = useState<DateValue | null>(defaultDate)
 	const isLeftSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isLeftSidebarVisible

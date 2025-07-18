@@ -1,18 +1,14 @@
 import {
 	Alert,
 	Button,
-	Input,
 	Modal,
 	ModalBody,
 	ModalContent,
 	ModalFooter,
 	ModalHeader,
-	Select,
-	SelectItem,
 	useDisclosure,
 } from '@heroui/react'
-import { FC, useEffect } from 'react'
-import { CiSearch } from 'react-icons/ci'
+import { FC, useEffect, useState } from 'react'
 import { RiContactsLine } from 'react-icons/ri'
 import { TContact } from '../../../../../share/types/events'
 import { BASE_URL, CONTACTS_ENDPOINT } from '../../../constants/config'
@@ -22,12 +18,20 @@ import {
 } from '../../../redux/slices/contactsSlice'
 import { useAppDispatch, useAppSelector } from '../../../redux/slices/hooks'
 import Contact from './Contact'
+import ContactsFilter from './ContactsFilter'
 
 const Contacts: FC = () => {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure()
 	const contacts: TContact[] = useAppSelector(selectContacts)
 
+	const [filterText, setFilterText] = useState<string>('')
+	const [filterCategory, setFilterCategory] = useState<keyof TContact | ''>('')
+
 	const dispatch = useAppDispatch()
+
+	const getContactProperty = (contact: TContact, key: keyof TContact) => {
+		return contact[key]
+	}
 
 	useEffect(() => {
 		dispatch(fetchContacts(`${BASE_URL}${CONTACTS_ENDPOINT}`))
@@ -57,30 +61,13 @@ const Contacts: FC = () => {
 						<>
 							<ModalHeader className='flex flex-col gap-1'>
 								<p>Your contacts ({contacts.length})</p>
-								<div className='flex gap-20'>
-									<Input
-										classNames={{
-											base: 'max-w-full text-center mx-auto pt-5',
-											mainWrapper: 'h-full',
-											input: 'text-small',
-											inputWrapper:
-												'h-full font-normal text-default-500 bg-default-400/20',
-										}}
-										placeholder='Contact to search...'
-										size='md'
-										startContent={<CiSearch size={18} />}
-										type='search'
-									/>
-									<Select
-										className='w-xs'
-										placeholder='Select a category'
-									>
-										<SelectItem>Username</SelectItem>
-										<SelectItem>Email</SelectItem>
-										<SelectItem>Date</SelectItem>
 
-									</Select>
-								</div>
+								<ContactsFilter
+									filterText={filterText}
+									setFilterText={setFilterText}
+									filterCategory={filterCategory}
+									setFilterCategory={setFilterCategory}
+								/>
 							</ModalHeader>
 							<ModalBody>
 								<>
@@ -92,11 +79,18 @@ const Contacts: FC = () => {
 											/>
 										</div>
 									)}
-									{contacts.map(el => (
-										<div key={el.id}>
-											<Contact data={el} />
-										</div>
-									))}
+									{contacts
+										.filter(el => {
+											if (!filterCategory || !filterText) return true
+											const value = getContactProperty(el, filterCategory)
+											return String(value).includes(filterText)
+										})
+
+										.map(el => (
+											<div key={el.id}>
+												<Contact data={el} />
+											</div>
+										))}
 								</>
 							</ModalBody>
 							<ModalFooter>

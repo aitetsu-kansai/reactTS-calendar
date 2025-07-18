@@ -5,6 +5,7 @@ import { TContactWithTempId } from '../../../../../share/types/events'
 import { BASE_URL, CONTACTS_ENDPOINT } from '../../../constants/config'
 import { addContact } from '../../../redux/slices/contactsSlice'
 import { useAppDispatch } from '../../../redux/slices/hooks'
+import { getDate } from '../../../utils/getDate'
 import { showInfo } from '../../../utils/showInfo'
 import PhoneInput from '../../PhoneInput'
 import UploadableAvatar from './UploadableAvatar'
@@ -24,6 +25,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 		username: '',
 		email: '',
 		phone: '',
+		dateAdded: '',
 	})
 
 	const handleOnChange = (
@@ -40,6 +42,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 			...contactData,
 			date: date?.toString(),
 			avatar: avatarFile,
+			dateAdded: getDate().toString(),
 		}
 
 		const formData = new FormData()
@@ -56,7 +59,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 				dispatch
 			)
 
-			setContactData({ username: '', email: '', phone: '' })
+			setContactData({ username: '', email: '', phone: '', dateAdded: '' })
 		} catch (error) {
 			showInfo(
 				{ infoMessage: `Something went wrong: ${error}`, infoType: 'danger' },

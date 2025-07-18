@@ -36,7 +36,7 @@ const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
 							{(email || phone || date) && (
 								<Card>
 									<CardBody>
-										<ul>
+										<ul className='flex flex-col gap-2'>
 											{email && (
 												<ContactsListElement
 													icon={<MdOutlineAlternateEmail />}
@@ -53,6 +53,7 @@ const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
 											)}
 											{phone && (
 												<ContactsListElement
+												
 													icon={<MdOutlinePhone />}
 													title='Phone number'
 													titleData={phone}

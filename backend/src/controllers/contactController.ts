@@ -48,6 +48,7 @@ export const createContact = async (
 
 		try {
 			const contactData: TContact = req.body
+			
 			if (!contactData) {
 				return res.status(400).json({ message: 'Contact data is required' })
 			}
@@ -55,7 +56,7 @@ export const createContact = async (
 			const newContact = new Contact({
 				...contactData,
 				id: generateRandomId(),
-				avatarUrl: req.file
+				avatar: req.file
 					? `http://localhost:5000/uploads/${req.file?.filename}`
 					: '',
 			})

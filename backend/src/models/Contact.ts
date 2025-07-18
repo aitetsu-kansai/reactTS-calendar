@@ -9,7 +9,8 @@ const contactSchema = new mongoose.Schema<IContact>({
 	email: { type: String, required: false },
 	phone: { type: String, required: false },
 	date: { type: String, required: false },
-	avatarUrl: { type: String, required: false },
+	avatar: { type: String, required: false },
+	dateAdded: { type: String, required: true },
 })
 
 const Contact = mongoose.model<IContact>('Contact', contactSchema)
