@@ -1,13 +1,14 @@
-import { Avatar, Button, Card, CardFooter } from '@heroui/react'
+import { Avatar, Card, CardFooter, Chip } from '@heroui/react'
 import { FC } from 'react'
 
 type TProps = {
 	avatar: string | undefined
 	username: string
+	email: string
 	onClick?: () => void
 }
 
-const ContactPageAvatar: FC<TProps> = ({ avatar, username }) => {
+const ContactPageAvatar: FC<TProps> = ({ avatar, username, email }) => {
 	return (
 		<Card
 			isFooterBlurred
@@ -35,15 +36,22 @@ const ContactPageAvatar: FC<TProps> = ({ avatar, username }) => {
 					{username}
 				</h4>
 
-				<Button
-					className='text font-semibold text-white bg-black/20'
+				<Chip
+					className='bg-transparent border-1 border-white/20 before rounded-small shadow-small'
 					color='default'
-					radius='lg'
+					radius='sm'
 					size='sm'
-					variant='flat'
+					// variant='flat'
+					variant='faded'
 				>
-					WRITE
-				</Button>
+					<a
+						className='text-white/80 font-bold'
+						href='mailto:fsda@mail.ru'
+						target='__blank'
+					>
+						WRITE
+					</a>
+				</Chip>
 			</CardFooter>
 		</Card>
 	)

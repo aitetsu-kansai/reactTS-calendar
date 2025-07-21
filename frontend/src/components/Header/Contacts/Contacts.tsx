@@ -109,10 +109,10 @@ const Contacts: FC = () => {
 											}
 
 											if (sortCategory.includes('dateAdded')) {
-												const aDate = new Date(getValue(a, 'dateAdded'))
-												const bDate = new Date(getValue(b, 'dateAdded'))
-												const diff = aDate.getTime() - bDate.getTime()
-												return sortCategory === 'dateAddedDesc' ? diff : -diff
+												// const aDate = new Date(getValue(a, 'dateAdded'))
+												// const bDate = new Date(getValue(b, 'dateAdded'))
+												// const diff = aDate.getTime() - bDate.getTime()
+												return sortCategory === 'dateAddedDesc' ? 1 : -1
 											}
 
 											return 0

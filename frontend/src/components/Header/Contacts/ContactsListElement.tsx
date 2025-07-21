@@ -8,7 +8,7 @@ type TProps = {
 
 const ContactsListElement: FC<TProps> = ({icon, title, titleData}) => {
 	return (
-		<li className='flex gap-2'>
+		<li className='flex gap-2 text-small'>
 			<span className='font-bold flex gap-2 items-center'>
 				{icon} {title}:
 			</span>
