@@ -12,7 +12,7 @@ import { TContact } from '../../../../../share/types/events'
 import { deleteContact } from '../../../redux/slices/contactsSlice'
 import { useAppDispatch } from '../../../redux/slices/hooks'
 import { showInfo } from '../../../utils/showInfo'
-import ContactPage from './ContactPage'
+import ContactPage from './ContactPage/ContactPage'
 
 type TProps = {
 	data: TContact

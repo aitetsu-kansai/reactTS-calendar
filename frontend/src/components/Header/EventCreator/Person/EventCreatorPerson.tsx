@@ -1,13 +1,10 @@
 import { DateInput, DateValue, Form, Input } from '@heroui/react'
-import axios from 'axios'
 import { ChangeEvent, FC, useState } from 'react'
-import { TContactWithTempId } from '../../../../../share/types/events'
-import { BASE_URL, CONTACTS_ENDPOINT } from '../../../constants/config'
-import { addContact } from '../../../redux/slices/contactsSlice'
-import { useAppDispatch } from '../../../redux/slices/hooks'
-import { getDate } from '../../../utils/getDate'
-import { showInfo } from '../../../utils/showInfo'
-import PhoneInput from '../../PhoneInput'
+import { TContactWithTempId } from '../../../../../../share/types/events'
+import { createContact } from '../../../../redux/slices/contactsSlice'
+import { useAppDispatch } from '../../../../redux/slices/hooks'
+import { getDate } from '../../../../utils/getDate'
+import PhoneInput from '../../../PhoneInput'
 import UploadableAvatar from './UploadableAvatar'
 
 type Props = {
@@ -50,22 +47,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef }) => {
 			if (value !== null && value !== undefined) formData.append(key, value)
 		}
 
-		try {
-			const res = await axios.post(`${BASE_URL}${CONTACTS_ENDPOINT}`, formData)
-			dispatch(addContact(res.data))
-
-			showInfo(
-				{ infoMessage: 'The contact was added', infoType: 'success' },
-				dispatch
-			)
-
-			setContactData({ username: '', email: '', phone: '', dateAdded: '' })
-		} catch (error) {
-			showInfo(
-				{ infoMessage: `Something went wrong: ${error}`, infoType: 'danger' },
-				dispatch
-			)
-		}
+		dispatch(createContact(formData))
 	}
 
 	return (

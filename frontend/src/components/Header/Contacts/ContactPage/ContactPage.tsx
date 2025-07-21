@@ -14,12 +14,12 @@ import {
 	MdOutlineAlternateEmail,
 	MdOutlineModeEditOutline,
 } from 'react-icons/md'
-import { TContact } from '../../../../../share/types/events'
+import { TContact } from '../../../../../../share/types/events'
 import ContactPageAvatar from './ContactPageAvatar'
 import ContactsListElement from './ContactsListElement'
 
 import { MdOutlinePhone } from 'react-icons/md'
-import EventCreatorPerson from '../EventCreator/EventCreatorPerson'
+import EventCreatorPerson from '../../EventCreator/Person/EventCreatorPerson'
 
 type TProps = {
 	isOpen: boolean

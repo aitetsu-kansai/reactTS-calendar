@@ -44,7 +44,7 @@ const Contacts: FC = () => {
 		getContactProperty(contact, key) ?? ''
 
 	useEffect(() => {
-		dispatch(fetchContacts(`${BASE_URL}${CONTACTS_ENDPOINT}`))
+		dispatch(fetchContacts())
 	}, [dispatch])
 
 	return (
