@@ -11,7 +11,6 @@ import {
 import { FC, useEffect, useState } from 'react'
 import { RiContactsLine } from 'react-icons/ri'
 import { TContact } from '../../../../../share/types/events'
-import { BASE_URL, CONTACTS_ENDPOINT } from '../../../constants/config'
 import {
 	fetchContacts,
 	selectContacts,
@@ -109,9 +108,6 @@ const Contacts: FC = () => {
 											}
 
 											if (sortCategory.includes('dateAdded')) {
-												// const aDate = new Date(getValue(a, 'dateAdded'))
-												// const bDate = new Date(getValue(b, 'dateAdded'))
-												// const diff = aDate.getTime() - bDate.getTime()
 												return sortCategory === 'dateAddedDesc' ? 1 : -1
 											}
 

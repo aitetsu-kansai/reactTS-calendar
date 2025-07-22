@@ -14,8 +14,7 @@ export const uploadPersonAvatar = (req: Request, res: Response) => {
 					.json({ message: 'Image is too large. Maximum size is 15MB' })
 			}
 			return res.status(400).send({ message: error.message })
-			return res
-				.send({ message: 'Server error during file upload' })
+			return res.send({ message: 'Server error during file upload' })
 		}
 
 		const files = req.files as { personAvatar: Express.Multer.File[] }
@@ -48,7 +47,7 @@ export const createContact = async (
 
 		try {
 			const contactData: TContact = req.body
-			
+
 			if (!contactData) {
 				return res.status(400).json({ message: 'Contact data is required' })
 			}
@@ -107,4 +106,19 @@ export const deleteContact = async (
 			res.status(500).json({ error: 'Contact deletion error' })
 		}
 	}, 2500)
+}
+
+export const patchContact = async (req: Request, res: Response) => {
+	try {
+		const id = req.body.id
+		console.log(req.body)
+		const updatedContact = await авыContact.findOneAndUpdate(
+			{ _id: id },
+			{ $set: req.body },
+			{ new: true }
+		)
+		console.log(id)
+		console.log(updatedContact)
+		res.json(updatedContact)
+	} catch (error) {}
 }

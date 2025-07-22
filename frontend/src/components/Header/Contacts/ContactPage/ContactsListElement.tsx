@@ -14,7 +14,7 @@ const ContactsListElement: FC<TProps> = ({ icon, title, titleData }) => {
 				{icon} {title}:
 			</span>
 			<p>{titleData}</p> */}
-			<Input value={titleData} variant='' startContent={icon}/>
+			<Input value={titleData} variant='underlined' startContent={icon} />
 		</li>
 	)
 }

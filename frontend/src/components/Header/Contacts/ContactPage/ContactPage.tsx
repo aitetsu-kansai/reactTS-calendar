@@ -8,17 +8,11 @@ import {
 	DrawerFooter,
 	DrawerHeader,
 } from '@heroui/react'
-import { FC, useState } from 'react'
-import { LiaBirthdayCakeSolid } from 'react-icons/lia'
-import {
-	MdOutlineAlternateEmail,
-	MdOutlineModeEditOutline,
-} from 'react-icons/md'
+import { FC, useRef, useState } from 'react'
+import { LuPencil, LuPencilOff } from 'react-icons/lu'
 import { TContact } from '../../../../../../share/types/events'
 import ContactPageAvatar from './ContactPageAvatar'
-import ContactsListElement from './ContactsListElement'
 
-import { MdOutlinePhone } from 'react-icons/md'
 import EventCreatorPerson from '../../EventCreator/Person/EventCreatorPerson'
 
 type TProps = {
@@ -29,14 +23,21 @@ type TProps = {
 
 const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
 	const { username, email, phone, date, avatar } = data
-
-	const [editButtonVariant, setEditButtonVariant] = useState<
-		'bordered' | 'solid'
-	>('bordered')
+	const formRef = useRef<HTMLFormElement>(null!)
+	const [isEditing, setIsEditing] = useState<boolean>(false)
 
 	const handleOnCLose = () => {
 		onClose()
-		setEditButtonVariant('bordered')
+		setIsEditing(false)
+	}
+
+	const handleSubmit = () => {
+		setIsEditing(!isEditing)
+		if (isEditing) {
+			formRef.current?.requestSubmit()
+			console.log('siu');
+			
+		}
 	}
 
 	return (
@@ -53,7 +54,7 @@ const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
 						{(email || phone || date) && (
 							<Card shadow='lg'>
 								<CardBody className='text-default/00'>
-									<ul className='flex flex-col gap-2'>
+									{/* <ul className='flex flex-col gap-2'>
 										{email && (
 											<ContactsListElement
 												icon={<MdOutlineAlternateEmail />}
@@ -75,27 +76,29 @@ const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
 												titleData={phone}
 											/>
 										)}
-									</ul>
+									</ul> */}
+									<EventCreatorPerson
+										mode='edit'
+										data={data}
+										isEditing={isEditing}
+										formRef={formRef}
+									/>
 								</CardBody>
 							</Card>
 						)}
 					</DrawerBody>
-					<EventCreatorPerson />
 					<DrawerFooter>
 						<Button
 							className='border-1'
 							isIconOnly
-							variant={editButtonVariant}
+							variant={isEditing ? 'solid' : 'faded'}
+							// variant='solid'
 							radius='full'
 							size='md'
 							title='Delete the contact'
-							onPress={() =>
-								setEditButtonVariant(
-									editButtonVariant === 'bordered' ? 'solid' : 'bordered'
-								)
-							}
+							onPress={handleSubmit}
 						>
-							<MdOutlineModeEditOutline />
+							{isEditing ? <LuPencilOff /> : <LuPencil />}
 						</Button>
 					</DrawerFooter>
 				</>

@@ -29,7 +29,7 @@ const EventCreatorForm: FC<Props> = ({ formRef }) => {
 		{
 			id: 'person',
 			label: 'Person',
-			content: <EventCreatorPerson formRef={formRef} />,
+			content: <EventCreatorPerson mode='create' formRef={formRef} />,
 		},
 	]
 

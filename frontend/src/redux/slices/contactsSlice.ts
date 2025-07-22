@@ -37,7 +37,7 @@ export const createContact = createAsyncThunk<any, FormData>(
 				{ infoMessage: 'The contact was added', infoType: 'success' },
 				dispatch
 			)
-			return res
+			return res.data
 		} catch (error: any) {
 			showInfo(
 				{ infoMessage: `Something went wrong: ${error}`, infoType: 'danger' },
@@ -66,6 +66,17 @@ export const deleteContact = createAsyncThunk<string, string>(
 	}
 )
 
+export const updateContact = createAsyncThunk<any, any>(
+	'contacts/updateContact',
+	async (data, {rejectWithValue, dispatch}) => {
+		try {
+			
+		} catch (error) {
+			
+		}
+	}
+)
+
 const initialState: TContact[] = []
 
 const contactsSlice = createSlice({
@@ -86,13 +97,10 @@ const contactsSlice = createSlice({
 			builder.addCase(deleteContact.rejected, () => {
 				console.log('rejected')
 			}),
-			builder.addCase(
-				createContact.fulfilled,
-				(state, action: PayloadAction<any>) => {
-					console.log(action.payload)
-					state.push(action.payload)
-				}
-			)
+			builder.addCase(createContact.fulfilled, (state, action: any) => {
+				console.log(action.payload)
+				state.push(action.payload)
+			})
 	},
 })
 
