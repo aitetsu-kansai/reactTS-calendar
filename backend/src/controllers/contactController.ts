@@ -112,8 +112,8 @@ export const patchContact = async (req: Request, res: Response) => {
 	try {
 		const id = req.body.id
 		console.log(req.body)
-		const updatedContact = await авыContact.findOneAndUpdate(
-			{ _id: id },
+		const updatedContact = await Contact.findOneAndUpdate(
+			{ id: id },
 			{ $set: req.body },
 			{ new: true }
 		)

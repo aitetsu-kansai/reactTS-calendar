@@ -4,25 +4,21 @@ import { LiaBirthdayCakeSolid } from 'react-icons/lia'
 import { LuUserRound } from 'react-icons/lu'
 import { MdOutlineAlternateEmail, MdOutlinePhone } from 'react-icons/md'
 import { TContactWithTempId } from '../../../../../../share/types/events'
-import { createContact } from '../../../../redux/slices/contactsSlice'
+import {
+	createContact,
+	updateContact,
+} from '../../../../redux/slices/contactsSlice'
 import { useAppDispatch } from '../../../../redux/slices/hooks'
 import { getDate } from '../../../../utils/getDate'
 import PhoneInput from '../../../PhoneInput'
 import UploadableAvatar from './UploadableAvatar'
 
-type Props =
-	| {
-			formRef: React.RefObject<HTMLFormElement>
-			mode: 'edit'
-			isEditing: boolean
-			data: any
-	  }
-	| {
-			formRef: React.RefObject<HTMLFormElement>
-			mode: 'create'
-			isEditing: boolean
-			data: any
-	  }
+type Props = {
+	formRef: React.RefObject<HTMLFormElement>
+	mode: 'create' | 'edit'
+	isEditing?: boolean
+	data?: any
+}
 
 const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 	const dispatch = useAppDispatch()
@@ -54,7 +50,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 		setContactData({ ...contactData, [parameter]: e.target.value })
 	}
 
-	const handleCreate = async (e: SubmitEvent) => {
+	const handleCreate = async (e: any) => {
 		e.preventDefault()
 
 		const data = {
@@ -72,16 +68,15 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 		dispatch(createContact(formData))
 	}
 
-	const handleEdit = async (e: SubmitEvent) => {
+	const handleEdit = async (e: any) => {
 		e.preventDefault()
 		const changedFields = Object.fromEntries(
 			Object.entries(contactData).filter(
 				([key, value]) => data[key as keyof typeof data] !== value
 			)
 		)
-		console.log(data)
-		console.log(contactData)
-		console.log(changedFields)
+		console.log({ ...changedFields, id: data.id })
+		dispatch(updateContact({ ...changedFields, id: data.id }))
 	}
 
 	return (
@@ -91,6 +86,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 					avatarUrl={avatarUrl}
 					setAvatarUrl={setAvatarUrl}
 					setAvatarFile={setAvatarFile}
+					mode={mode}
 				/>
 				<Form
 					ref={formRef}
@@ -107,7 +103,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 						placeholder={`Enter person's username`}
 						type='text'
 						variant={mode === 'edit' ? 'underlined' : 'flat'}
-						isDisabled={!isEditing}
+						isDisabled={mode === 'edit' ? !isEditing : false}
 					/>
 
 					<Input
@@ -119,10 +115,10 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 						placeholder={`Enter person's email`}
 						type='email'
 						variant={mode === 'edit' ? 'underlined' : 'flat'}
-						isDisabled={!isEditing}
+						isDisabled={mode === 'edit' ? !isEditing : false}
 					/>
 					<PhoneInput
-						isDisabled={!isEditing}
+						isDisabled={mode === 'edit' ? !isEditing : false}
 						variant={mode === 'edit' ? 'underlined' : 'flat'}
 						startContent={<MdOutlinePhone />}
 						value={contactData.phone}
@@ -131,7 +127,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 						}
 					/>
 					<DateInput
-						isDisabled={!isEditing}
+						isDisabled={mode === 'edit' ? !isEditing : false}
 						variant={mode === 'edit' ? 'underlined' : 'flat'}
 						value={date}
 						onChange={setDate}

@@ -5,6 +5,7 @@ import { MdOutlineRemoveCircleOutline } from 'react-icons/md'
 
 type TProps = {
 	avatarUrl: string
+	mode: 'edit' | 'create'
 	setAvatarUrl: (params: string) => void
 	setAvatarFile: (params: File | null) => void
 }
@@ -13,6 +14,7 @@ const UploadableAvatar: FC<TProps> = ({
 	avatarUrl,
 	setAvatarUrl,
 	setAvatarFile,
+	mode,
 }) => {
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const handleClick = () => {
@@ -33,8 +35,19 @@ const UploadableAvatar: FC<TProps> = ({
 	}
 
 	return (
-		<div className='relative w-45 h-45 group'>
-			<Avatar className='w-45 h-45 text-large object-cover' src={avatarUrl} />
+		// <div className='relative w-45 h-45 group'>
+		// 	<Avatar
+		// 		className='w-45 h-45 text-large object-cover'
+		// 		src={avatarUrl}
+		// 		radius={`${mode === 'edit' ? 'lg' : 'full'}`}
+		// 	/>
+
+		<div>
+			<Avatar
+				className='w-68 h-68 text-large object-cover'
+				src={avatarUrl}
+				radius={`${mode === 'edit' ? 'lg' : 'full'}`}
+			/>
 
 			<div className='absolute inset-0 bg-black bg-opacity-40 rounded-full flex flex-col items-center justify-around opacity-0 group-hover:opacity-60 transition-opacity duration-300 cursor-pointer'>
 				{avatarUrl !== '' && (

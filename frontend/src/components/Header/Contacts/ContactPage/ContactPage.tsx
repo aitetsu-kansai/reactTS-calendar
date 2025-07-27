@@ -35,8 +35,6 @@ const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
 		setIsEditing(!isEditing)
 		if (isEditing) {
 			formRef.current?.requestSubmit()
-			console.log('siu');
-			
 		}
 	}
 
@@ -54,29 +52,6 @@ const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
 						{(email || phone || date) && (
 							<Card shadow='lg'>
 								<CardBody className='text-default/00'>
-									{/* <ul className='flex flex-col gap-2'>
-										{email && (
-											<ContactsListElement
-												icon={<MdOutlineAlternateEmail />}
-												title='Email'
-												titleData={email}
-											/>
-										)}
-										{date && (
-											<ContactsListElement
-												icon={<LiaBirthdayCakeSolid />}
-												title='Birthday'
-												titleData={date}
-											/>
-										)}
-										{phone && (
-											<ContactsListElement
-												icon={<MdOutlinePhone />}
-												title='Phone number'
-												titleData={phone}
-											/>
-										)}
-									</ul> */}
 									<EventCreatorPerson
 										mode='edit'
 										data={data}

@@ -68,11 +68,19 @@ export const deleteContact = createAsyncThunk<string, string>(
 
 export const updateContact = createAsyncThunk<any, any>(
 	'contacts/updateContact',
-	async (data, {rejectWithValue, dispatch}) => {
+	async (data, { rejectWithValue }) => {
 		try {
-			
-		} catch (error) {
-			
+			const res = await axios.patch(
+				`${BASE_URL}${CONTACTS_ENDPOINT}${data.id}`,
+				data
+			)
+
+			if (!res.data) {
+				return rejectWithValue("Can't update the contact. Server error.")
+			}
+			return res.data
+		} catch (error: any) {
+			return rejectWithValue(error.message)
 		}
 	}
 )
@@ -97,9 +105,19 @@ const contactsSlice = createSlice({
 			builder.addCase(deleteContact.rejected, () => {
 				console.log('rejected')
 			}),
-			builder.addCase(createContact.fulfilled, (state, action: any) => {
-				console.log(action.payload)
-				state.push(action.payload)
+			builder.addCase(
+				createContact.fulfilled,
+				(state, action: PayloadAction<TContact>) => {
+					console.log(action.payload)
+					state.push(action.payload)
+				}
+			),
+			builder.addCase(updateContact.fulfilled, (state, action) => {
+				const contactIndex = state.findIndex(el => el.id === action.payload.id)
+				console.log(contactIndex)
+				if (contactIndex !== -1) {
+					state[contactIndex] = { ...state[contactIndex], ...action.payload }
+				}
 			})
 	},
 })
