@@ -20,9 +20,6 @@ const PhoneInput: FC<TProps> = ({
 		const raw = e.target.value
 		let cleaned = raw.replace(/(?!^\+)\D/g, '')
 
-		if (!cleaned.startsWith('+')) {
-			return cleaned
-		}
 
 		onChange(cleaned)
 	}

@@ -24,8 +24,15 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 	const dispatch = useAppDispatch()
 
 	const [date, setDate] = useState<DateValue | null>(null)
-	const [avatarUrl, setAvatarUrl] = useState<string>('')
 	const [avatarFile, setAvatarFile] = useState<File | null>(null)
+
+	const setAvatarUrl = (data: File | '') => {
+		setContactData({
+			...contactData,
+			avatar: typeof data === 'string' ? '' : URL.createObjectURL(data),
+		})
+		console.log(data)
+	}
 
 	const [contactData, setContactData] = useState<TContactWithTempId>({
 		username: '',
@@ -76,6 +83,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 			)
 		)
 		console.log({ ...changedFields, id: data.id })
+		console.log(contactData.avatar)
 		dispatch(updateContact({ ...changedFields, id: data.id }))
 	}
 
@@ -83,10 +91,12 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 		<>
 			<div className='flex flex-wrap gap-4 justify-center'>
 				<UploadableAvatar
-					avatarUrl={avatarUrl}
+					avatarUrl={contactData.avatar || ''}
 					setAvatarUrl={setAvatarUrl}
 					setAvatarFile={setAvatarFile}
 					mode={mode}
+					isEditing={isEditing || false}
+					isDisabled={mode === 'edit' ? !isEditing : false}
 				/>
 				<Form
 					ref={formRef}

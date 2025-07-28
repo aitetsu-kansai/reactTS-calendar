@@ -1,6 +1,5 @@
-import { Card, CardFooter, Chip } from '@heroui/react'
-import { FC, useState } from 'react'
-import UploadableAvatar from '../../EventCreator/Person/UploadableAvatar'
+import { Avatar, Card, CardFooter, Chip } from '@heroui/react'
+import { FC } from 'react'
 
 type TProps = {
 	avatar: string | undefined
@@ -10,9 +9,6 @@ type TProps = {
 }
 
 const ContactPageAvatar: FC<TProps> = ({ avatar, username, email }) => {
-	const [avatarUrl, setAvatarUrl] = useState<string>('')
-	const [avatarFile, setAvatarFile] = useState<File | null>(null)
-
 	return (
 		<Card
 			isFooterBlurred
@@ -20,14 +16,12 @@ const ContactPageAvatar: FC<TProps> = ({ avatar, username, email }) => {
 			radius='lg'
 			shadow='none'
 		>
-			{/* <Avatar
+			<Avatar
 				className='w-68 h-68 text-large object-cover'
 				radius='lg'
 				alt='User avatar'
 				src={avatar && avatar}
-			/> */}
-
-			<UploadableAvatar mode='edit' />
+			/>
 
 			<CardFooter className='justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 shadow-small ml-1 z-10 max-w-60'>
 				<h4 className='text font-semibold text-white/80 wrap-anywhere'>

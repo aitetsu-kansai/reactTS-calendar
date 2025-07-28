@@ -6,15 +6,17 @@ import { MdOutlineRemoveCircleOutline } from 'react-icons/md'
 type TProps = {
 	avatarUrl: string
 	mode: 'edit' | 'create'
-	setAvatarUrl: (params: string) => void
+	setAvatarUrl: (params: any) => any
 	setAvatarFile: (params: File | null) => void
+	isDisabled: boolean
+	isEditing: boolean
 }
 
 const UploadableAvatar: FC<TProps> = ({
 	avatarUrl,
 	setAvatarUrl,
 	setAvatarFile,
-	mode,
+	isEditing,
 }) => {
 	const fileInputRef = useRef<HTMLInputElement>(null)
 	const handleClick = () => {
@@ -24,7 +26,8 @@ const UploadableAvatar: FC<TProps> = ({
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0]
 		if (file) {
-			setAvatarUrl(URL.createObjectURL(file))
+			setAvatarUrl(file)
+
 			setAvatarFile(file)
 		}
 	}
@@ -35,41 +38,32 @@ const UploadableAvatar: FC<TProps> = ({
 	}
 
 	return (
-		// <div className='relative w-45 h-45 group'>
-		// 	<Avatar
-		// 		className='w-45 h-45 text-large object-cover'
-		// 		src={avatarUrl}
-		// 		radius={`${mode === 'edit' ? 'lg' : 'full'}`}
-		// 	/>
+		isEditing && (
+			<div className='relative w-45 h-45 group'>
+				<Avatar className='w-45 h-45 text-large object-cover' src={avatarUrl} />
 
-		<div>
-			<Avatar
-				className='w-68 h-68 text-large object-cover'
-				src={avatarUrl}
-				radius={`${mode === 'edit' ? 'lg' : 'full'}`}
-			/>
-
-			<div className='absolute inset-0 bg-black bg-opacity-40 rounded-full flex flex-col items-center justify-around opacity-0 group-hover:opacity-60 transition-opacity duration-300 cursor-pointer'>
-				{avatarUrl !== '' && (
-					<MdOutlineRemoveCircleOutline
-						className='text-white w-6 h-6  hover:scale-110 transition-all duration-150 ease-in'
-						onClick={handleResetAvatar}
+				<div className='absolute inset-0 bg-black bg-opacity-40 rounded-full flex flex-col items-center justify-around opacity-0 group-hover:opacity-60 transition-opacity duration-300 cursor-pointer'>
+					{avatarUrl !== '' && (
+						<MdOutlineRemoveCircleOutline
+							className='text-white w-6 h-6  hover:scale-110 transition-all duration-150 ease-in'
+							onClick={handleResetAvatar}
+						/>
+					)}
+					<BiUpload
+						className='text-white w-6 h-6 hover:scale-110 transition-all duration-150 ease-in '
+						onClick={handleClick}
 					/>
-				)}
-				<BiUpload
-					className='text-white w-6 h-6 hover:scale-110 transition-all duration-150 ease-in '
-					onClick={handleClick}
+				</div>
+
+				<input
+					ref={fileInputRef}
+					type='file'
+					accept='image/*'
+					className='hidden'
+					onChange={handleFileChange}
 				/>
 			</div>
-
-			<input
-				ref={fileInputRef}
-				type='file'
-				accept='image/*'
-				className='hidden'
-				onChange={handleFileChange}
-			/>
-		</div>
+		)
 	)
 }
 
