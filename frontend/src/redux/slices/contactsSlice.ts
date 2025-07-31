@@ -95,30 +95,33 @@ const contactsSlice = createSlice({
 		builder.addCase(
 			fetchContacts.fulfilled,
 			(state, action: PayloadAction<TContact[]>) => {
-				console.log(action.payload)
 				return (state = action.payload)
 			}
 		),
 			builder.addCase(deleteContact.fulfilled, (state, action) => {
 				return state.filter(contact => contact.id !== action.payload)
 			}),
-			builder.addCase(deleteContact.rejected, () => {
-				console.log('rejected')
+			builder.addCase(deleteContact.rejected, (_, action) => {
+				console.error('Failed to delete contact:', action.error)
 			}),
 			builder.addCase(
 				createContact.fulfilled,
 				(state, action: PayloadAction<TContact>) => {
-					console.log(action.payload)
 					state.push(action.payload)
 				}
 			),
+			builder.addCase(createContact.rejected, (_, action) => {
+				console.error('Failed to create contact:', action.error)
+			}),
 			builder.addCase(updateContact.fulfilled, (state, action) => {
 				const contactIndex = state.findIndex(el => el.id === action.payload.id)
-				console.log(contactIndex)
 				if (contactIndex !== -1) {
 					state[contactIndex] = { ...state[contactIndex], ...action.payload }
 				}
 			})
+		builder.addCase(updateContact.rejected, (_, action) => {
+			console.error('Failed to update contact:', action.error)
+		})
 	},
 })
 

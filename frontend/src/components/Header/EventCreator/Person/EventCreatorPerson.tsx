@@ -87,17 +87,21 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 		dispatch(updateContact({ ...changedFields, id: data.id }))
 	}
 
+	console.log(mode)
+
 	return (
 		<>
 			<div className='flex flex-wrap gap-4 justify-center'>
-				<UploadableAvatar
-					avatarUrl={contactData.avatar || ''}
-					setAvatarUrl={setAvatarUrl}
-					setAvatarFile={setAvatarFile}
-					mode={mode}
-					isEditing={isEditing || false}
-					isDisabled={mode === 'edit' ? !isEditing : false}
-				/>
+				{(mode === 'create' || (mode === 'edit' && isEditing)) && (
+					<UploadableAvatar
+						avatarUrl={contactData.avatar || ''}
+						setAvatarUrl={setAvatarUrl}
+						setAvatarFile={setAvatarFile}
+						mode={mode}
+						isEditing={isEditing || false}
+						isDisabled={mode === 'edit' ? !isEditing : false}
+					/>
+				)}
 				<Form
 					ref={formRef}
 					className='w-full flex flex-col gap-4'

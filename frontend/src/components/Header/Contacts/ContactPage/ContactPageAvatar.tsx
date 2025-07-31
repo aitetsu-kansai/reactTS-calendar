@@ -21,6 +21,7 @@ const ContactPageAvatar: FC<TProps> = ({ avatar, username, email }) => {
 				radius='lg'
 				alt='User avatar'
 				src={avatar && avatar}
+				
 			/>
 
 			<CardFooter className='justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 shadow-small ml-1 z-10 max-w-60'>
