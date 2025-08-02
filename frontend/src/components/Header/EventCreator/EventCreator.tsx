@@ -30,22 +30,17 @@ const EventCreator: FC = () => {
 			</Button>
 			<Modal isOpen={isOpen} placement='top-center' onOpenChange={onOpenChange}>
 				<ModalContent>
-					{onClose => (
-						<>
-							<ModalHeader className='flex flex-col gap-1'></ModalHeader>
-							<ModalBody>
-								<EventCreatorForm formRef={formRef} />
-							</ModalBody>
-							<ModalFooter>
-								<Button color='danger' variant='flat' onPress={onClose}>
-									Close
-								</Button>
-								<Button variant='flat' onPress={handleSubmitForm}>
-									Create
-								</Button>
-							</ModalFooter>
-						</>
-					)}
+					<>
+						<ModalHeader className='flex flex-col gap-1'></ModalHeader>
+						<ModalBody>
+							<EventCreatorForm formRef={formRef} />
+						</ModalBody>
+						<ModalFooter>
+							<Button variant='flat' onPress={handleSubmitForm}>
+								Create
+							</Button>
+						</ModalFooter>
+					</>
 				</ModalContent>
 			</Modal>
 		</>

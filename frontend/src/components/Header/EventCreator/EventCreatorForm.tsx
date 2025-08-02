@@ -2,8 +2,8 @@ import { Card, CardBody, Tab, Tabs } from '@heroui/react'
 import { FC, Key, useState } from 'react'
 import { useAppDispatch } from '../../../redux/slices/hooks'
 import { toggleFormTab } from '../../../redux/slices/uiSlice'
-import EventCreatorEvent from './EventCreatorEvent'
-import EventCreatorPerson from './EventCreatorPerson'
+import EventCreatorEvent from './Event/EventCreatorEvent'
+import EventCreatorPerson from './Person/EventCreatorPerson'
 
 type Props = {
 	formRef: React.RefObject<HTMLFormElement>
@@ -29,7 +29,7 @@ const EventCreatorForm: FC<Props> = ({ formRef }) => {
 		{
 			id: 'person',
 			label: 'Person',
-			content: <EventCreatorPerson formRef={formRef} />,
+			content: <EventCreatorPerson mode='create' formRef={formRef} />,
 		},
 	]
 

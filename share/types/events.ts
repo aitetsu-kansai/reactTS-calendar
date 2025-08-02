@@ -8,11 +8,11 @@ export type TEvent = {
 
 export type TContactWithTempId = {
 	username: string
-	email: string
+	email?: string
 	phone?: string | null
-	date?: null | string
-	// avatarUrl?: string
-	avatarUrl?: any
+	date?: string | null | any
+	avatar?: string | undefined
+	dateAdded: string
 }
 
 export type TContact = {

@@ -14,10 +14,7 @@ export const uploadPersonAvatar = (req: Request, res: Response) => {
 					.json({ message: 'Image is too large. Maximum size is 15MB' })
 			}
 			return res.status(400).send({ message: error.message })
-		} else if (error) {
-			return res
-				.status(500)
-				.send({ message: 'Server error during file upload' })
+			return res.send({ message: 'Server error during file upload' })
 		}
 
 		const files = req.files as { personAvatar: Express.Multer.File[] }
@@ -34,7 +31,10 @@ export const uploadPersonAvatar = (req: Request, res: Response) => {
 	})
 }
 
-export const createContact = async (req: Request, res: any) => {
+export const createContact = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
 	upload(req, res, async function (error) {
 		if (error instanceof multer.MulterError) {
 			if (error.code === 'LIMIT_FILE_SIZE') {
@@ -47,6 +47,7 @@ export const createContact = async (req: Request, res: any) => {
 
 		try {
 			const contactData: TContact = req.body
+
 			if (!contactData) {
 				return res.status(400).json({ message: 'Contact data is required' })
 			}
@@ -54,9 +55,10 @@ export const createContact = async (req: Request, res: any) => {
 			const newContact = new Contact({
 				...contactData,
 				id: generateRandomId(),
-				avatarUrl: `http://localhost:5000/uploads/${req.file?.filename}`,
+				avatar: req.file
+					? `http://localhost:5000/uploads/${req.file?.filename}`
+					: '',
 			})
-			console.log(req.file?.filename)
 			await newContact.save()
 			res.status(201).json(newContact)
 		} catch (error) {
@@ -65,11 +67,58 @@ export const createContact = async (req: Request, res: any) => {
 	})
 }
 
-export const getContacts = async (req: Request, res: Response) => {
+export const getContacts = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
 	try {
 		const contacts = await Contact.find()
 		res.json(contacts)
 	} catch (error) {
 		res.status(500).json({ message: 'Server error', error })
 	}
+}
+
+export const deleteContact = async (
+	req: Request,
+	res: Response
+): Promise<void> => {
+	let aborted = false
+	req.on('close', () => {
+		if (!res.writableEnded) {
+			aborted = true
+			console.log('DELETE request ignored, aborted by user')
+		}
+	})
+	setTimeout(async () => {
+		if (aborted) return
+		try {
+			const contactId = req.params.id
+			const contactToDelete = await Contact.findOneAndDelete({ id: contactId })
+			console.log(contactToDelete)
+
+			if (!contactToDelete) {
+				res.status(400).json({ error: 'The contact is not found' })
+				return
+			}
+			res.json({ message: 'The contact deleted', contactToDelete })
+		} catch (error) {
+			res.status(500).json({ error: 'Contact deletion error' })
+		}
+	}, 2500)
+}
+
+export const patchContact = async (req: Request, res: Response) => {
+	try {
+		const id = req.body.id
+		console.log(req.body)
+		const updatedContact = await Contact.findOneAndUpdate(
+			{ id: id },
+			{ $set: req.body },
+			{ new: true }
+		)
+		console.log(id)
+		console.log(updatedContact)
+		res.json(updatedContact)
+	} catch (error) {}
 }
