@@ -2,6 +2,7 @@ import {
 	Button,
 	Card,
 	CardBody,
+	Chip,
 	Drawer,
 	DrawerBody,
 	DrawerContent,
@@ -11,9 +12,8 @@ import {
 import { FC, useRef, useState } from 'react'
 import { LuPencil, LuPencilOff } from 'react-icons/lu'
 import { TContact } from '../../../../../../share/types/events'
-import ContactPageAvatar from './ContactPageAvatar'
-
 import EventCreatorPerson from '../../EventCreator/Person/EventCreatorPerson'
+import ContactPageAvatar from './ContactPageAvatar'
 
 type TProps = {
 	isOpen: boolean
@@ -47,20 +47,26 @@ const ContactPage: FC<TProps> = ({ isOpen, onClose, data }) => {
 						<ContactPageAvatar
 							avatar={avatar}
 							username={username}
-							email={email}
+							email={email ? email : ''}
 						/>
-						{(email || phone || date) && (
-							<Card shadow='lg'>
-								<CardBody className='text-default/00'>
-									<EventCreatorPerson
-										mode='edit'
-										data={data}
-										isEditing={isEditing}
-										formRef={formRef}
-									/>
-								</CardBody>
-							</Card>
-						)}
+
+						<Card shadow='lg'>
+							<CardBody className='text-default/00'>
+								{!date && !email && !phone && !isEditing ? (
+									<Chip radius='md' variant='flat' color='warning'>
+										No more data
+									</Chip>
+								) : (
+									''
+								)}
+								<EventCreatorPerson
+									mode='edit'
+									data={data}
+									isEditing={isEditing}
+									formRef={formRef}
+								/>
+							</CardBody>
+						</Card>
 					</DrawerBody>
 					<DrawerFooter>
 						<Button

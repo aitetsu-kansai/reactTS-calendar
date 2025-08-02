@@ -8,7 +8,7 @@ export type TEvent = {
 
 export type TContactWithTempId = {
 	username: string
-	email: string
+	email?: string
 	phone?: string | null
 	date?: string | null | any
 	avatar?: string | undefined

@@ -1,9 +1,13 @@
-import { DateInput, DateValue, Form, Input } from '@heroui/react'
+import { DateInput, Form, Input } from '@heroui/react'
+import { parseDate } from '@internationalized/date'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { LiaBirthdayCakeSolid } from 'react-icons/lia'
 import { LuUserRound } from 'react-icons/lu'
 import { MdOutlineAlternateEmail, MdOutlinePhone } from 'react-icons/md'
-import { TContactWithTempId } from '../../../../../../share/types/events'
+import {
+	TContact,
+	TContactWithTempId,
+} from '../../../../../../share/types/events'
 import {
 	createContact,
 	updateContact,
@@ -13,17 +17,28 @@ import { getDate } from '../../../../utils/getDate'
 import PhoneInput from '../../../PhoneInput'
 import UploadableAvatar from './UploadableAvatar'
 
-type Props = {
+type CreateProps = {
 	formRef: React.RefObject<HTMLFormElement>
-	mode: 'create' | 'edit'
+	mode: 'create'
 	isEditing?: boolean
-	data?: any
+	data?: undefined
 }
 
+type EditProps = {
+	formRef: React.RefObject<HTMLFormElement>
+	mode: 'edit'
+	isEditing?: boolean
+	data: TContact
+}
+
+type Props = CreateProps | EditProps
+
 const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
+	const isEditable = mode === 'create' || isEditing
+	const isFormDisabled = mode === 'edit' ? !isEditing : false
+	const inputVariant = mode === 'edit' ? 'underlined' : 'flat'
 	const dispatch = useAppDispatch()
 
-	const [date, setDate] = useState<DateValue | null>(null)
 	const [avatarFile, setAvatarFile] = useState<File | null>(null)
 
 	const setAvatarUrl = (data: File | '') => {
@@ -31,7 +46,6 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 			...contactData,
 			avatar: typeof data === 'string' ? '' : URL.createObjectURL(data),
 		})
-		console.log(data)
 	}
 
 	const [contactData, setContactData] = useState<TContactWithTempId>({
@@ -39,7 +53,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 		email: '',
 		phone: '',
 		dateAdded: '',
-		date: date,
+		date: '',
 		avatar: '',
 	})
 
@@ -47,109 +61,119 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 		if (mode === 'edit') {
 			setContactData({ ...data })
 		}
-	}, [])
+	}, [data, mode])
 
 	const handleOnChange = (
 		e: ChangeEvent<HTMLInputElement | any>,
 		parameter: keyof typeof contactData
 	) => {
-		console.log(e.target.value)
+		e.preventDefault()
 		setContactData({ ...contactData, [parameter]: e.target.value })
 	}
 
-	const handleCreate = async (e: any) => {
+	const handleSubmit = async (e: any) => {
 		e.preventDefault()
+		if (mode === 'create') {
+			const data = {
+				...contactData,
+				avatar: avatarFile,
+				dateAdded: getDate().toString(),
+			}
 
-		const data = {
-			...contactData,
-			date: date?.toString(),
-			avatar: avatarFile,
-			dateAdded: getDate().toString(),
-		}
-
-		const formData = new FormData()
-		for (const [key, value] of Object.entries(data)) {
-			if (value !== null && value !== undefined) formData.append(key, value)
-		}
-
-		dispatch(createContact(formData))
-	}
-
-	const handleEdit = async (e: any) => {
-		e.preventDefault()
-		const changedFields = Object.fromEntries(
-			Object.entries(contactData).filter(
-				([key, value]) => data[key as keyof typeof data] !== value
+			const formData = new FormData()
+			for (const [key, value] of Object.entries(data)) {
+				if (value !== null && value !== undefined) formData.append(key, value)
+			}
+			dispatch(createContact(formData))
+		} else if (mode === 'edit') {
+			const changedFields = Object.fromEntries(
+				Object.entries(contactData).filter(
+					([key, value]) => data[key as keyof typeof data] !== value
+				)
 			)
-		)
-		console.log({ ...changedFields, id: data.id })
-		console.log(contactData.avatar)
-		dispatch(updateContact({ ...changedFields, id: data.id }))
+
+			dispatch(updateContact({ ...changedFields, id: data.id }))
+		}
 	}
 
-	console.log(mode)
+	const dateValue =
+		contactData.date && contactData.date !== ''
+			? parseDate(contactData.date)
+			: null
 
 	return (
 		<>
 			<div className='flex flex-wrap gap-4 justify-center'>
-				{(mode === 'create' || (mode === 'edit' && isEditing)) && (
+				{(mode === 'create' || isEditable) && (
 					<UploadableAvatar
 						avatarUrl={contactData.avatar || ''}
 						setAvatarUrl={setAvatarUrl}
 						setAvatarFile={setAvatarFile}
 						mode={mode}
 						isEditing={isEditing || false}
-						isDisabled={mode === 'edit' ? !isEditing : false}
+						isDisabled={isFormDisabled}
 					/>
 				)}
 				<Form
 					ref={formRef}
 					className='w-full flex flex-col gap-4'
-					onSubmit={mode === 'edit' ? handleEdit : handleCreate}
+					onSubmit={handleSubmit}
 				>
-					<Input
-						value={contactData.username}
-						onChange={e => handleOnChange(e, 'username')}
-						isRequired
-						startContent={<LuUserRound />}
-						errorMessage='Please enter a valid username'
-						name='username'
-						placeholder={`Enter person's username`}
-						type='text'
-						variant={mode === 'edit' ? 'underlined' : 'flat'}
-						isDisabled={mode === 'edit' ? !isEditing : false}
-					/>
-
-					<Input
-						value={contactData.email}
-						onChange={e => handleOnChange(e, 'email')}
-						errorMessage='Please enter a valid email'
-						startContent={<MdOutlineAlternateEmail />}
-						name='email'
-						placeholder={`Enter person's email`}
-						type='email'
-						variant={mode === 'edit' ? 'underlined' : 'flat'}
-						isDisabled={mode === 'edit' ? !isEditing : false}
-					/>
-					<PhoneInput
-						isDisabled={mode === 'edit' ? !isEditing : false}
-						variant={mode === 'edit' ? 'underlined' : 'flat'}
-						startContent={<MdOutlinePhone />}
-						value={contactData.phone}
-						onChange={newValue =>
-							setContactData({ ...contactData, phone: newValue })
-						}
-					/>
-					<DateInput
-						isDisabled={mode === 'edit' ? !isEditing : false}
-						variant={mode === 'edit' ? 'underlined' : 'flat'}
-						value={date}
-						onChange={setDate}
-						startContent={<LiaBirthdayCakeSolid />}
-						errorMessage='Please enter a valid date'
-						label={'Birth date'}
-						name='date'
-					/>
+					{isEditable && (
+						<Input
+							value={contactData.username}
+							onChange={e => handleOnChange(e, 'username')}
+							isRequired
+							startContent={<LuUserRound />}
+							errorMessage='Please enter a valid username'
+							name='username'
+							placeholder={`Enter person's username`}
+							type='text'
+							variant={inputVariant}
+							isDisabled={isFormDisabled}
+						/>
+					)}
+					{(isEditable || contactData.email) && (
+						<Input
+							value={contactData.email}
+							onChange={e => handleOnChange(e, 'email')}
+							errorMessage='Please enter a valid email'
+							startContent={<MdOutlineAlternateEmail />}
+							name='email'
+							placeholder={`Enter person's email`}
+							type='email'
+							variant={inputVariant}
+							isDisabled={isFormDisabled}
+						/>
+					)}
+					{(isEditable || contactData.phone) && (
+						<PhoneInput
+							isDisabled={isFormDisabled}
+							variant={inputVariant}
+							startContent={<MdOutlinePhone />}
+							value={contactData.phone}
+							onChange={newValue =>
+								setContactData({ ...contactData, phone: newValue })
+							}
+						/>
+					)}
+					{(isEditable || contactData.date) && (
+						<DateInput
+							isDisabled={isFormDisabled}
+							variant={inputVariant}
+							value={dateValue}
+							onChange={newDate => {
+								setContactData({
+									...contactData,
+									date: newDate?.toString() || '',
+								})
+							}}
+							startContent={<LiaBirthdayCakeSolid />}
+							errorMessage='Please enter a valid date'
+							label={'Birth date'}
+							name='date'
+						/>
+					)}
 				</Form>
 			</div>
 		</>
