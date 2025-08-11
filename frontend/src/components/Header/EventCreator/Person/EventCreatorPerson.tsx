@@ -85,6 +85,14 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 				if (value !== null && value !== undefined) formData.append(key, value)
 			}
 			dispatch(createContact(formData))
+			setContactData({
+				username: '',
+				email: '',
+				phone: '',
+				dateAdded: '',
+				date: '',
+				avatar: '',
+			})
 		} else if (mode === 'edit') {
 			const changedFields = Object.fromEntries(
 				Object.entries(contactData).filter(

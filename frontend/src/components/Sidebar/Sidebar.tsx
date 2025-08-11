@@ -1,12 +1,11 @@
 import { FC } from 'react'
-// import { TypeChildren } from '../../types/props'
+import { TypeChildren } from '../../../../share/types/props'
 
-type TypeChildren = {
-	children: React.ReactNode
+type TChildren = {
 	visible: boolean
-}
+} & TypeChildren
 
-const Sidebar: FC<TypeChildren> = ({ children, visible }) => {
+const Sidebar: FC<TChildren> = ({ children, visible }) => {
 	return (
 		<div
 			className={`text-center max-w-0 h-screen ${visible ? 'max-w-100' : ''}`}
