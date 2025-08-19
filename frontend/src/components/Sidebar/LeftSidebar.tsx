@@ -14,7 +14,7 @@ const LeftSidebar: FC = () => {
 
 	return (
 		<>
-			<div className='flex flex-col'>
+			<div className='flex flex-col items-center text-center'>
 				<Sidebar visible={isLeftSidebarVisible}>
 					<Calendar
 						showMonthAndYearPickers
