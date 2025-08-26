@@ -17,7 +17,7 @@ createRoot(document.getElementById('root')!).render(
 		<NextThemesProvider defaultTheme='dark' attribute='class'>
 			<Provider store={store}>
 				<StrictMode>
-					<main className='text-foreground bg-background h-[100vh] flex flex-col justify-center items-center gap-4'>
+					<main className='text-foreground bg-background h-full justify-center items-center gap-4'>
 						<App />
 					</main>
 				</StrictMode>
