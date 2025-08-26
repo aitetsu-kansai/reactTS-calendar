@@ -23,9 +23,7 @@ function App() {
 				>
 					<LeftSidebar />
 				</div>
-				<div className='flex-1 overflow-auto mt-5 mb-5'>
-					<Calendar />
-				</div>
+				<div className='w-full text-left bg-blue-500'>Основная часть</div>
 				<div
 					className={`
 						transition-all duration-300 ease-in-out overflow-hidden
