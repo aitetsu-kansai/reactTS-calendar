@@ -17,13 +17,15 @@ function App() {
 			<div className='flex overflow-hidden'>
 				<div
 					className={`
-						transition-all duration-300 ease-in-out overflow-hidden
+						transition-all duration-300 ease-in-out
 						${isLeftSidebarVisible ? 'max-w-[40%] w-100' : 'max-w-0 w-0'}
 					`}
 				>
 					<LeftSidebar />
 				</div>
-				<div className='w-full text-left bg-blue-500'>Основная часть</div>
+				<div className='w-full mt-5 mb-5 '>
+					<Calendar />
+				</div>
 				<div
 					className={`
 						transition-all duration-300 ease-in-out overflow-hidden
