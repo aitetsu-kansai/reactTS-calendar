@@ -6,7 +6,7 @@ import {
 	TimeInput,
 	TimeInputValue,
 } from '@heroui/react'
-import { getLocalTimeZone, now, today } from '@internationalized/date'
+import { getLocalTimeZone, today } from '@internationalized/date'
 import { FC, useEffect, useState } from 'react'
 import { TEventWithoutId } from '../../../../../../share/types/events'
 import { createEvent } from '../../../../redux/slices/eventsSlice'
