@@ -1,21 +1,14 @@
-import { Button } from '@heroui/react'
-import {
-	selectCalendar,
-	switchNextWeek,
-} from '../../../redux/slices/calendarReducer'
-import { useAppDispatch, useAppSelector } from '../../../redux/slices/hooks'
+import { selectCalendar } from '../../../redux/slices/calendarReducer'
+import { useAppSelector } from '../../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../../redux/slices/uiSlice'
 import { getDatesOfISOWeek } from '../../../utils/calendarHelpers'
 
 const Calendar = () => {
-	const dispatch = useAppDispatch()
 	const sidebarStatuses = useAppSelector(selectSidebarsStatus)
 	const { currentYear, visibleWeek } = useAppSelector(selectCalendar)
 
 	const days = getDatesOfISOWeek(visibleWeek, currentYear)
-	const handleOnClick = () => {
-		dispatch(switchNextWeek())
-	}
+
 	return (
 		<div
 			className={`
@@ -27,10 +20,14 @@ const Calendar = () => {
 				}
       `}
 		>
-			<Button onPress={handleOnClick}>CLICK</Button>
 			<div className='grid grid-cols-7'>
 				{days.map(el => (
-					<p>{String(el)}</p>
+					<div key={el.getTime()} className='text-center'>
+						<p>
+							{String(el.toLocaleDateString('en-EN', { weekday: 'short' }))}
+						</p>
+						<p className='text-3xl'>{String(el.getDate())}</p>
+					</div>
 				))}
 			</div>
 			<div

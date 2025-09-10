@@ -11,17 +11,37 @@ import {
 	BsLayoutSidebarInsetReverse,
 } from 'react-icons/bs'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
-import { useAppDispatch } from '../../redux/slices/hooks'
+import {
+	selectCalendar,
+	switchNextWeek,
+	switchPreviousWeek,
+	switchToCurrentWeek,
+} from '../../redux/slices/calendarReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/slices/hooks'
 import { toggleSidebar } from '../../redux/slices/uiSlice'
 import Contacts from './Contacts/Contacts'
 import EventCreator from './EventCreator/EventCreator'
 
 const Header: FC = () => {
 	const dispatch = useAppDispatch()
-
+	const current = useAppSelector(selectCalendar)
 	const toggleSidebarHandler = (direction: 'left' | 'right') => {
 		dispatch(toggleSidebar(direction))
 	}
+
+	const handleNextWeek = () => {
+		dispatch(switchNextWeek())
+	}
+
+	const handlePreviousWeek = () => {
+		dispatch(switchPreviousWeek())
+	}
+
+	const handleCurrentWeek = () => {
+		dispatch(switchToCurrentWeek())
+	}
+
+	const visibleMonth = `${current.currentMonth}, ${current.currentYear}`
 
 	return (
 		<Navbar className='w-full ps-4 pr-4 m-0 flex' maxWidth='full'>
@@ -45,7 +65,7 @@ const Header: FC = () => {
 					<Button
 						className='text-14 border-1'
 						variant='bordered'
-						// onPress={onOpen}
+						onPress={handleCurrentWeek}
 						radius='full'
 					>
 						Today
@@ -53,7 +73,7 @@ const Header: FC = () => {
 					<Button
 						className='border-1'
 						isIconOnly
-						// onPress={onOpen}
+						onPress={handlePreviousWeek}
 						variant='bordered'
 						radius='full'
 						size='md'
@@ -63,13 +83,16 @@ const Header: FC = () => {
 					<Button
 						className='border-1'
 						isIconOnly
-						// onPress={onOpen}
+						onPress={handleNextWeek}
 						variant='bordered'
 						radius='full'
 						size='md'
 					>
 						<IoIosArrowForward />
 					</Button>
+				</NavbarItem>
+				<NavbarItem>
+					<h3 className='text-xl'>{visibleMonth}</h3>
 				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent as='div' className='items-center' justify='end'>
