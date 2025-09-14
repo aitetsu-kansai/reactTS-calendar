@@ -8,11 +8,10 @@ const Calendar = () => {
 	const { currentYear, visibleWeek } = useAppSelector(selectCalendar)
 
 	const days = getDatesOfISOWeek(visibleWeek, currentYear)
-
 	return (
 		<div
 			className={`
-        rounded-2xl bg-neutral-800 overflow-hidden 
+        rounded-2xl bg-neutral-800 overflow-hidden ps-3 pr-3
         ${
 					!sidebarStatuses.isLeftSidebarVisible &&
 					!sidebarStatuses.isRightSidebarVisible &&
@@ -35,7 +34,6 @@ const Calendar = () => {
 				style={{ gridTemplateRows: 'repeat(25, minmax(40px, 1fr))' }}
 			>
 				{Array.from({ length: 7 * 25 }).map((_, i) => {
-					console.log(days[0])
 					const row = Math.floor(i / 7)
 					const col = i % 7
 					return (

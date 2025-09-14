@@ -21,8 +21,32 @@ export const getDatesOfISOWeek = (week: number, year: number): Date[] => {
 	return Array.from({ length: 7 }, (_, i) => {
 		const d = new Date(targetDate)
 		d.setDate(targetDate.getDate() + i)
-		console.log(d)
 
 		return d
 	})
+}
+
+export const getMonthsOfWeek = (week: number, year: number): string[] => {
+	const dates = getDatesOfISOWeek(week, year)
+	const months = dates.map(date =>
+		date.toLocaleString('en-EN', { month: 'long' })
+	)
+	console.log(dates)
+	return [...new Set(months)]
+}
+
+export const getYearOfWeek = (week: number, year: number): string[] => {
+	const dates = getDatesOfISOWeek(week, year)
+
+	const years: string[] = []
+
+	for (let i = 0; i < dates.length; i++) {
+		const element = dates[i].toLocaleString('en-EN', { year: 'numeric' })
+		years.includes(element) ? false : years.push(element)
+	}
+	return years
+	// console.log(yearss)
+	// const years = dates.map(date =>
+	// 	date.toLocaleString('en-EN', { year: 'numeric' })
+	// )
 }

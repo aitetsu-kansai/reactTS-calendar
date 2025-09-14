@@ -19,12 +19,17 @@ import {
 } from '../../redux/slices/calendarReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/slices/hooks'
 import { toggleSidebar } from '../../redux/slices/uiSlice'
+import { getMonthsOfWeek, getYearOfWeek } from '../../utils/calendarHelpers'
 import Contacts from './Contacts/Contacts'
 import EventCreator from './EventCreator/EventCreator'
 
 const Header: FC = () => {
 	const dispatch = useAppDispatch()
 	const current = useAppSelector(selectCalendar)
+
+	const months = getMonthsOfWeek(current.visibleWeek, current.currentYear)
+	const years = getYearOfWeek(current.visibleWeek, current.currentYear)
+	
 	const toggleSidebarHandler = (direction: 'left' | 'right') => {
 		dispatch(toggleSidebar(direction))
 	}
@@ -41,7 +46,9 @@ const Header: FC = () => {
 		dispatch(switchToCurrentWeek())
 	}
 
-	const visibleMonth = `${current.currentMonth}, ${current.currentYear}`
+	const visibleMonth = `${months.map((el: any) => el).join(' - ')} ${years
+		.map((el: any) => el)
+		.join(' - ')}`
 
 	return (
 		<Navbar className='w-full ps-4 pr-4 m-0 flex' maxWidth='full'>

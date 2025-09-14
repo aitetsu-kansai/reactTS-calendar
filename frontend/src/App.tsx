@@ -23,7 +23,7 @@ function App() {
 				>
 					<LeftSidebar />
 				</div>
-				<div className='w-full mt-5 mb-5 '>
+				<div className={`w-full mt-5 mb-5 pr-5`}>
 					<Calendar />
 				</div>
 				<div
