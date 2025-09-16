@@ -5,12 +5,15 @@ import { RootState } from '../store'
 const today = new Date()
 
 const initialState = {
-	currentDate: today,
+	currentDate: today.toISOString(),
+	// currentDate: today,
 	currentYear: today.getFullYear(),
 	currentMonth: today.toLocaleDateString('en-EN', { month: 'long' }),
 	visibleMonth: 1,
 	visibleWeek: getWeekNumber(today),
 }
+
+console.log(initialState)
 
 const calendarSlice = createSlice({
 	name: 'calendar',
@@ -35,6 +38,7 @@ const calendarSlice = createSlice({
 })
 
 export const selectCalendar = (state: RootState) => state.calendar
-export const { switchNextWeek, switchPreviousWeek, switchToCurrentWeek } = calendarSlice.actions
+export const { switchNextWeek, switchPreviousWeek, switchToCurrentWeek } =
+	calendarSlice.actions
 
 export default calendarSlice.reducer

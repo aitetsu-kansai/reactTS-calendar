@@ -28,11 +28,21 @@ export const getDatesOfISOWeek = (week: number, year: number): Date[] => {
 
 export const getMonthsOfWeek = (week: number, year: number): string[] => {
 	const dates = getDatesOfISOWeek(week, year)
-	const months = dates.map(date =>
-		date.toLocaleString('en-EN', { month: 'long' })
-	)
-	console.log(dates)
-	return [...new Set(months)]
+	// const months = dates.map(date =>
+	// 	date.toLocaleString('en-EN', { month: 'long' })
+	// )
+	// console.log(months)
+
+	// return [...new Set(months)]
+
+	const months: string[] = []
+
+	for (let i = 0; i < dates.length; i++) {
+		const element = dates[i].toLocaleString('en-EN', { month: 'long' })
+		months.includes(element) ? false : months.push(element)
+	}
+	console.log(months)
+	return months
 }
 
 export const getYearOfWeek = (week: number, year: number): string[] => {

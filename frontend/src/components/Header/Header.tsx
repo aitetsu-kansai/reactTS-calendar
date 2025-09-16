@@ -29,7 +29,7 @@ const Header: FC = () => {
 
 	const months = getMonthsOfWeek(current.visibleWeek, current.currentYear)
 	const years = getYearOfWeek(current.visibleWeek, current.currentYear)
-	
+
 	const toggleSidebarHandler = (direction: 'left' | 'right') => {
 		dispatch(toggleSidebar(direction))
 	}
@@ -46,9 +46,10 @@ const Header: FC = () => {
 		dispatch(switchToCurrentWeek())
 	}
 
-	const visibleMonth = `${months.map((el: any) => el).join(' - ')} ${years
-		.map((el: any) => el)
-		.join(' - ')}`
+	const visibleMonthAndYear =
+		years.length === 1
+			? `${months.join(' - ')} ${years[0]}`
+			: months.map((el, i) => `${el} ${years[i]}`).join(' - ')
 
 	return (
 		<Navbar className='w-full ps-4 pr-4 m-0 flex' maxWidth='full'>
@@ -99,7 +100,7 @@ const Header: FC = () => {
 					</Button>
 				</NavbarItem>
 				<NavbarItem>
-					<h3 className='text-xl'>{visibleMonth}</h3>
+					<h3 className='text-xl'>{visibleMonthAndYear}</h3>
 				</NavbarItem>
 			</NavbarContent>
 			<NavbarContent as='div' className='items-center' justify='end'>
