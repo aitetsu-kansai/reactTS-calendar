@@ -41,7 +41,6 @@ export const getMonthsOfWeek = (week: number, year: number): string[] => {
 		const element = dates[i].toLocaleString('en-EN', { month: 'long' })
 		months.includes(element) ? false : months.push(element)
 	}
-	console.log(months)
 	return months
 }
 

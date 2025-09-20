@@ -6,6 +6,7 @@ const today = new Date()
 
 const initialState = {
 	currentDate: today.toISOString(),
+	currentDay: today.getDate(),
 	// currentDate: today,
 	currentYear: today.getFullYear(),
 	currentMonth: today.toLocaleDateString('en-EN', { month: 'long' }),
@@ -13,7 +14,6 @@ const initialState = {
 	visibleWeek: getWeekNumber(today),
 }
 
-console.log(initialState)
 
 const calendarSlice = createSlice({
 	name: 'calendar',
