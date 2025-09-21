@@ -1,7 +1,7 @@
 import type { DateValue } from '@heroui/react'
 import { Calendar, Divider } from '@heroui/react'
 import { CalendarDate, parseDate } from '@internationalized/date'
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { selectCalendar } from '../../redux/slices/calendarReducer'
 import { useAppSelector } from '../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../redux/slices/uiSlice'
@@ -16,7 +16,7 @@ const LeftSidebar: FC = () => {
 
 	console.log(defaultDate)
 
-	const [focusedDate, setFocusedDate] = useState<DateValue | null>(defaultDate)
+	const [focusedDate, setFocusedDate] = useState<DateValue | null>(null)
 	const isLeftSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isLeftSidebarVisible
 
@@ -24,11 +24,9 @@ const LeftSidebar: FC = () => {
 
 	const getDateValueFromWeek = (weekNumber: number, year: number): any => {
 		const jan4 = new Date(Number(year), 0, 4)
-		console.log(weekNumber, year)
 
 		const firstMonday = new Date(jan4)
 
-		console.log(firstMonday)
 		const targetDate = new Date(firstMonday)
 		targetDate.setDate(firstMonday.getDate() + (Number(weekNumber) - 1) * 7)
 		console.log(targetDate)
@@ -42,12 +40,16 @@ const LeftSidebar: FC = () => {
 
 	console.log(getDateValueFromWeek(visibleWeek, currentYear))
 
+	console.log(focusedDate)
+	useEffect(() => {
+		setFocusedDate(getDateValueFromWeek(visibleWeek, currentYear))
+	}, [visibleWeek])
+
 	return (
 		<>
 			<div className='flex flex-col items-center text-center'>
 				<Sidebar visible={isLeftSidebarVisible}>
 					<Calendar
-						// disableAnimation={true}
 						weekdayStyle='short'
 						color='foreground'
 						// showMonthAndYearPickers
@@ -56,11 +58,10 @@ const LeftSidebar: FC = () => {
 							headerWrapper: 'bg-[#27272C] border-b-1 border-[#27272C]',
 							header: 'bg-[#27272A]',
 							gridHeader: 'bg-[#27272A] border-b-1 border-neutral-500',
-							 
 
-							content:'bg-[#18181B]'
+							content: 'bg-[#18181B]',
 						}}
-						value={currentDate}
+						value={focusedDate}
 						aria-label='Date (Controlled Focused Value)'
 						focusedValue={focusedDate}
 						onFocusChange={setFocusedDate}

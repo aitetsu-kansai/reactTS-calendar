@@ -21,19 +21,39 @@ const Calendar = () => {
       `}
 		>
 			<div className='grid grid-cols-7'>
-				{days.map(el => (
-					<div
-						key={el.getTime()}
-						className={`text-center ${
-							String(el.getDate()) === String(currentDay) ? 'bg-blue-500' : ''
-						}`}
-					>
-						<p>
-							{String(el.toLocaleDateString('en-EN', { weekday: 'short' }))}
-						</p>
-						<p className='text-3xl '>{String(el.getDate())}</p>
-					</div>
-				))}
+				{days.map(el => {
+					const calendarDate = el.toLocaleDateString('sv-SV')
+					const [currentDateWithoutTime] = currentDate.split('T')
+
+					return (
+						<div
+							key={el.getTime()}
+							className={`flex justify-center ${
+								String(el.getDate()) === String(currentDay) ? '' : ''
+							}`}
+						>
+							<div
+								className={`text-center font-bold ${
+									String(el.getDate()) === String(currentDay) ? 'w-[40%]' : ''
+								}`}
+							>
+								<p>
+									{String(el.toLocaleDateString('en-EN', { weekday: 'short' }))}
+								</p>
+
+								<p
+									className={`text-3xl ${
+										calendarDate === currentDateWithoutTime
+											? 'bg-foreground text-background rounded-full'
+											: ''
+									}`}
+								>
+									{String(el.getDate())}
+								</p>
+							</div>
+						</div>
+					)
+				})}
 			</div>
 			<div
 				className='grid grid-cols-7 h-[calc(100vh-90px)] custom-scrollbar'
