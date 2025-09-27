@@ -1,22 +1,21 @@
 import type { DateValue } from '@heroui/react'
 import { Calendar, Divider } from '@heroui/react'
-import { CalendarDate, parseDate } from '@internationalized/date'
+import { CalendarDate } from '@internationalized/date'
 import { FC, useEffect, useState } from 'react'
-import { selectCalendar } from '../../redux/slices/calendarReducer'
-import { useAppSelector } from '../../redux/slices/hooks'
+import {
+	selectCalendar,
+	setVisibleWeek,
+} from '../../redux/slices/calendarReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../redux/slices/uiSlice'
-import { getDate } from '../../utils/getDate'
+import { getWeekNumber } from '../../utils/calendarHelpers'
 import Sidebar from './Sidebar'
 
 const LeftSidebar: FC = () => {
-	const currentDate = parseDate(
-		useAppSelector(selectCalendar).currentDate.split('T')[0]
-	)
-	const defaultDate = getDate()
-
-	console.log(defaultDate)
-
+	const dispatch = useAppDispatch()
 	const [focusedDate, setFocusedDate] = useState<DateValue | null>(null)
+	// const weekNum = getWeekNumber(focusedDate?.toDate)
+
 	const isLeftSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isLeftSidebarVisible
 
@@ -29,7 +28,6 @@ const LeftSidebar: FC = () => {
 
 		const targetDate = new Date(firstMonday)
 		targetDate.setDate(firstMonday.getDate() + (Number(weekNumber) - 1) * 7)
-		console.log(targetDate)
 
 		return new CalendarDate(
 			targetDate.getFullYear(),
@@ -38,12 +36,9 @@ const LeftSidebar: FC = () => {
 		)
 	}
 
-	console.log(getDateValueFromWeek(visibleWeek, currentYear))
-
-	console.log(focusedDate)
 	useEffect(() => {
 		setFocusedDate(getDateValueFromWeek(visibleWeek, currentYear))
-	}, [visibleWeek])
+	}, [visibleWeek, currentYear])
 
 	return (
 		<>
@@ -61,10 +56,17 @@ const LeftSidebar: FC = () => {
 
 							content: 'bg-[#18181B]',
 						}}
-						value={focusedDate}
 						aria-label='Date (Controlled Focused Value)'
-						focusedValue={focusedDate}
-						onFocusChange={setFocusedDate}
+						// focusedValue={focusedDate}
+						value={focusedDate}
+						onChange={date => {
+							setFocusedDate(date)
+							console.log('SIU SIU SIU')
+							const newDate = new Date(date?.year, date?.month - 1, date?.day)
+
+							dispatch(setVisibleWeek(getWeekNumber(newDate)))
+						}}
+					
 					/>
 					<Divider className='my-2' />
 				</Sidebar>

@@ -7,18 +7,17 @@ const today = new Date()
 const initialState = {
 	currentDate: today.toISOString(),
 	currentDay: today.getDate(),
-	// currentDate: today,
 	currentYear: today.getFullYear(),
 	currentMonth: today.toLocaleDateString('en-EN', { month: 'long' }),
 	visibleMonth: 1,
 	visibleWeek: getWeekNumber(today),
 }
 
-
 const calendarSlice = createSlice({
 	name: 'calendar',
 	initialState,
 	reducers: {
+		
 		switchNextWeek: (
 			state,
 			{ payload = 1 }: PayloadAction<number | undefined>
@@ -34,11 +33,18 @@ const calendarSlice = createSlice({
 		) => {
 			state.visibleWeek -= payload
 		},
+		setVisibleWeek: (state, action: PayloadAction<number>) => {
+			state.visibleWeek = action.payload
+		},
 	},
 })
 
 export const selectCalendar = (state: RootState) => state.calendar
-export const { switchNextWeek, switchPreviousWeek, switchToCurrentWeek } =
-	calendarSlice.actions
+export const {
+	switchNextWeek,
+	switchPreviousWeek,
+	switchToCurrentWeek,
+	setVisibleWeek,
+} = calendarSlice.actions
 
 export default calendarSlice.reducer
