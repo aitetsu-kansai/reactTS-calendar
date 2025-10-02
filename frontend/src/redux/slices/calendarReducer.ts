@@ -1,16 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { getWeekNumber } from '../../utils/calendarHelpers'
 import { RootState } from '../store'
+import { DateValue } from '@heroui/react'
+import { TCalendarInfo } from '../../../../share/types/calendar'
 
 const today = new Date()
 
-const initialState = {
+const initialState:TCalendarInfo<DateValue> = {
 	currentDate: today.toISOString(),
 	currentDay: today.getDate(),
 	currentYear: today.getFullYear(),
 	currentMonth: today.toLocaleDateString('en-EN', { month: 'long' }),
 	visibleMonth: 1,
 	visibleWeek: getWeekNumber(today),
+	focusedDate: null,
 }
 
 const calendarSlice = createSlice({
@@ -36,6 +39,9 @@ const calendarSlice = createSlice({
 		setVisibleWeek: (state, action: PayloadAction<number>) => {
 			state.visibleWeek = action.payload
 		},
+		setFocusedDate: (state, action:PayloadAction<DateValue>) => {
+			state.focusedDate = action.payload
+		}
 	},
 })
 
@@ -45,6 +51,7 @@ export const {
 	switchPreviousWeek,
 	switchToCurrentWeek,
 	setVisibleWeek,
+	setFocusedDate
 } = calendarSlice.actions
 
 export default calendarSlice.reducer

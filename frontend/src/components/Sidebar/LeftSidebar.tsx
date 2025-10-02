@@ -1,9 +1,9 @@
-import type { DateValue } from '@heroui/react'
 import { Calendar, Divider } from '@heroui/react'
 import { CalendarDate } from '@internationalized/date'
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import {
 	selectCalendar,
+	setFocusedDate,
 	setVisibleWeek,
 } from '../../redux/slices/calendarReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/slices/hooks'
@@ -13,7 +13,8 @@ import Sidebar from './Sidebar'
 
 const LeftSidebar: FC = () => {
 	const dispatch = useAppDispatch()
-	const [focusedDate, setFocusedDate] = useState<DateValue | null>(null)
+	const focusedDate = useAppSelector(selectCalendar).focusedDate
+	// const [focusedDate, setFocusedDate] = useState<DateValue | null>(null)
 	// const weekNum = getWeekNumber(focusedDate?.toDate)
 
 	const isLeftSidebarVisible =
@@ -37,7 +38,7 @@ const LeftSidebar: FC = () => {
 	}
 
 	useEffect(() => {
-		setFocusedDate(getDateValueFromWeek(visibleWeek, currentYear))
+		dispatch(setFocusedDate(getDateValueFromWeek(visibleWeek, currentYear)))
 	}, [visibleWeek, currentYear])
 
 	return (
@@ -60,13 +61,12 @@ const LeftSidebar: FC = () => {
 						// focusedValue={focusedDate}
 						value={focusedDate}
 						onChange={date => {
-							setFocusedDate(date)
+							dispatch(setFocusedDate(date))
 							console.log('SIU SIU SIU')
 							const newDate = new Date(date?.year, date?.month - 1, date?.day)
 
 							dispatch(setVisibleWeek(getWeekNumber(newDate)))
 						}}
-					
 					/>
 					<Divider className='my-2' />
 				</Sidebar>
