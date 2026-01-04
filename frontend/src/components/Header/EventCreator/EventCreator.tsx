@@ -29,7 +29,7 @@ const EventCreator: FC = () => {
 				+ Add event
 			</Button>
 			<Modal isOpen={isOpen} placement='top-center' onOpenChange={onOpenChange}>
-				<ModalContent>
+				<ModalContent className='bg-component-bg'>
 					<>
 						<ModalHeader className='flex flex-col gap-1'></ModalHeader>
 						<ModalBody>

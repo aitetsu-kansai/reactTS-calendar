@@ -1,3 +1,5 @@
+import { CalendarDate } from '@internationalized/date'
+
 export const getWeekNumber = (date: Date): number => {
 	const temp = new Date(
 		Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
@@ -54,8 +56,17 @@ export const getYearOfWeek = (week: number, year: number): string[] => {
 		years.includes(element) ? false : years.push(element)
 	}
 	return years
-	// console.log(yearss)
-	// const years = dates.map(date =>
-	// 	date.toLocaleString('en-EN', { year: 'numeric' })
-	// )
+}
+
+export const toCalendarDate = (date: Date): CalendarDate => {
+	return new CalendarDate(
+		date.getFullYear(),
+		date.getMonth() + 1,
+		date.getDate()
+	)
+}
+
+export const toDate = (calendarDate: CalendarDate): any => {
+	const { year, month, day } = calendarDate
+	return new Date(Date.UTC(year, month - 1, day))
 }

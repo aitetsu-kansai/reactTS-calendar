@@ -34,7 +34,7 @@ const EventCreatorForm: FC<Props> = ({ formRef }) => {
 	]
 
 	return (
-		<div className='flex w-full flex-col'>
+		<div className='flex w-full flex-col bg-component-bg'>
 			<Tabs
 				aria-label='Dynamic tabs'
 				items={tabs}

@@ -14,7 +14,9 @@ const config = {
 				mono: ['var(--font-mono)'],
 			},
 			colors: {
+				'component-bg': '#111113',
 				'custom-secondary': 'red',
+				content1: '#111113',
 			},
 		},
 	},
@@ -23,4 +25,3 @@ const config = {
 }
 
 module.exports = config
-

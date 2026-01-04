@@ -7,12 +7,11 @@ const Calendar = () => {
 	const sidebarStatuses = useAppSelector(selectSidebarsStatus)
 	const { currentYear, visibleWeek, currentDate, currentDay } =
 		useAppSelector(selectCalendar)
-
 	const days = getDatesOfISOWeek(visibleWeek, currentYear)
 	return (
 		<div
 			className={`
-        rounded-2xl bg-[#18181B] overflow-hidden ps-3 pr-3
+        rounded-2xl bg-component-bg overflow-hidden ps-3
         ${
 					!sidebarStatuses.isLeftSidebarVisible &&
 					!sidebarStatuses.isRightSidebarVisible &&
@@ -20,11 +19,14 @@ const Calendar = () => {
 				}
       `}
 		>
-			<div className='grid grid-cols-7'>
+			<div
+				className='grid'
+				style={{ gridTemplateColumns: '70px repeat(7, 1fr)' }}
+			>
+				<div></div>
 				{days.map(el => {
 					const calendarDate = el.toLocaleDateString('sv-SV')
 					const [currentDateWithoutTime] = currentDate.split('T')
-
 					return (
 						<div
 							key={el.getTime()}
@@ -56,21 +58,28 @@ const Calendar = () => {
 				})}
 			</div>
 			<div
-				className='grid grid-cols-7 h-[calc(100vh-90px)] custom-scrollbar'
-				style={{ gridTemplateRows: 'repeat(25, minmax(40px, 1fr))' }}
+				className='grid h-[calc(100vh-160px)] custom-scrollbar overflow-y-scroll pr-3'
+				style={{
+					gridTemplateColumns: '70px repeat(7, 1fr)',
+					gridTemplateRows: 'repeat(25, minmax(40px, 1fr))',
+				}}
 			>
-				{Array.from({ length: 7 * 25 }).map((_, i) => {
-					const row = Math.floor(i / 7)
-					const col = i % 7
+				{Array.from({ length: 8 * 25 }).map((_, i) => {
+					const row = Math.floor(i / 8)
+					const col = i % 8
+					const isTimeColumn = col === 0
+					const isDayColumn = col > 0
+
 					return (
 						<div
 							key={i}
-							className={`p-3 text-sm text-neutral-300 
-								${col < 6 ? 'border-r border-neutral-500' : ''} 
-								${row < 24 ? 'border-b border-neutral-500' : ''}
-								`}
+							className={`flex flex-col align- justify-end text-sm text-neutral-300 
+								${isTimeColumn ? 'border-r border-neutral-600 pr-2 text-right' : ''}
+								${isDayColumn && col < 7 ? 'border-r border-neutral-600' : ''}
+								${row < 24 ? 'border-b border-neutral-600' : ''}
+							`}
 						>
-							{i % 7 === 0 ? `${row}:00` : ''}
+							{isTimeColumn && row !== 0 && row !== 24 ? `${row}:00` : ''}
 						</div>
 					)
 				})}
