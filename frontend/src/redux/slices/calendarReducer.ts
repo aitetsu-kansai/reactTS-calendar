@@ -35,6 +35,7 @@ const calendarSlice = createSlice({
 		) => {
 			state.visibleWeek -= payload
 		},
+
 		setVisibleWeek: (state, action: PayloadAction<number>) => {
 			state.visibleWeek = action.payload
 		},

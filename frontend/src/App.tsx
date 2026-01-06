@@ -17,8 +17,8 @@ function App() {
 			<div className='flex overflow-hidden'>
 				<div
 					className={`
-						transition-all duration-300 ease-in-out
-						${isLeftSidebarVisible ? 'max-w-[40%] w-100' : 'max-w-0 w-0'}
+						transition-all duration-400 ease
+						${isLeftSidebarVisible ? 'max-w-[30%] w-70' : 'max-w-0 w-0'}
 					`}
 				>
 					<LeftSidebar />
@@ -28,7 +28,7 @@ function App() {
 				</div>
 				<div
 					className={`
-						transition-all duration-300 ease-in-out overflow-hidden
+						transition-all duration-400 ease overflow-hidden
 						${isRightSidebarVisible ? 'max-w-[20%] w-1/5' : 'max-w-0 w-0'}
 					
 					`}

@@ -14,9 +14,10 @@ const config = {
 				mono: ['var(--font-mono)'],
 			},
 			colors: {
-				'component-bg': '#111113',
+				// 'component-bg': '#111113',
+				'component-bg': '#0c0c0cff',
 				'custom-secondary': 'red',
-				content1: '#111113',
+				content1: '#111111ff',
 			},
 		},
 	},

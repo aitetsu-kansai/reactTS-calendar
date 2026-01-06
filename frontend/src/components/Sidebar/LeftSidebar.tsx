@@ -61,20 +61,20 @@ const LeftSidebar: FC = () => {
 					<Calendar
 						weekdayStyle='short'
 						color='foreground'
-						className='scale-85 overflow-y-hidden overflow-x-hidden bg-red-400'
-						classNames={{
-							headerWrapper: 'bg-[#27272C] border-b-1 border-[#27272C]',
-							header: 'bg-[#27272A]',
-							gridHeader: 'bg-[#27272A] border-b-1 border-neutral-500',
-
-							content: 'bg-component-bg',
-						}}
+						// className='scale-85 overflow-y-hidden overflow-x-hidden'
+						className='scale-85 overflow-hidden' // ← фиксированная ширина
 						aria-label='Date (Controlled Focused Value)'
 						value={
 							focusedDate !== null
 								? toCalendarDate(new Date(focusedDate))
 								: null
 						}
+						classNames={{
+							headerWrapper: 'bg-[#27272C] border-b-1 border-[#27272C]',
+							header: 'bg-[#27272A]',
+							gridHeader: 'bg-[#27272A]',
+							content: 'bg-component-bg',
+						}}
 						onChange={date => {
 							const jsDate = toDate(date)
 							console.log(focusedDate)

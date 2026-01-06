@@ -12,11 +12,6 @@ const Calendar = () => {
 		<div
 			className={`
         rounded-2xl bg-component-bg overflow-hidden ps-3
-        ${
-					!sidebarStatuses.isLeftSidebarVisible &&
-					!sidebarStatuses.isRightSidebarVisible &&
-					'ms-5 mr-5'
-				}
       `}
 		>
 			<div
