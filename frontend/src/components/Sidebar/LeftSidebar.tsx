@@ -5,7 +5,7 @@ import {
 	selectCalendar,
 	setFocusedDate,
 	setVisibleWeek,
-} from '../../redux/slices/calendarReducer'
+} from '../../redux/slices/calendarSlice'
 import { useAppDispatch, useAppSelector } from '../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../redux/slices/uiSlice'
 import {

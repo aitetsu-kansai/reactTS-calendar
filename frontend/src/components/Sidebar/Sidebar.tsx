@@ -11,6 +11,7 @@ const Sidebar: FC<TChildren> = ({ children, visible }) => {
 			className={`
       h-screen 
       transition-all duration-400 ease
+			flex flex-col items-center
       overflow-hidden
       ${visible ? 'w-[300px] opacity-100' : 'w-0 opacity-0'}
     `}

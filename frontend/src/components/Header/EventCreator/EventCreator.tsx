@@ -21,7 +21,7 @@ const EventCreator: FC = () => {
 	return (
 		<>
 			<Button
-				className='text-14 border-1'
+				className='text-14 border-1 w-33'
 				variant='bordered'
 				onPress={onOpen}
 				radius='full'

@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import {
+	TCalendarInfo,
+	TCalendarLayout,
+} from '../../../../share/types/calendar'
 import { getWeekNumber } from '../../utils/calendarHelpers'
 import { RootState } from '../store'
-import { TCalendarInfo } from '../../../../share/types/calendar'
 
 const today = new Date()
 
-const initialState:TCalendarInfo<string> = {
+const initialState: TCalendarInfo<string> = {
 	currentDate: today.toISOString(),
 	currentDay: today.getDate(),
 	currentYear: today.getFullYear(),
@@ -13,13 +16,14 @@ const initialState:TCalendarInfo<string> = {
 	visibleMonth: 1,
 	visibleWeek: getWeekNumber(today),
 	focusedDate: null,
+	calendarLayout: 'week',
 }
 
 const calendarSlice = createSlice({
 	name: 'calendar',
 	initialState,
 	reducers: {
-		
+		//calendar control
 		switchNextWeek: (
 			state,
 			{ payload = 1 }: PayloadAction<number | undefined>
@@ -39,9 +43,13 @@ const calendarSlice = createSlice({
 		setVisibleWeek: (state, action: PayloadAction<number>) => {
 			state.visibleWeek = action.payload
 		},
-		setFocusedDate: (state, action:PayloadAction<string>) => {
+		setFocusedDate: (state, action: PayloadAction<string>) => {
 			state.focusedDate = action.payload
-		}
+		},
+
+		switchCalendarLayout: (state, action: PayloadAction<TCalendarLayout>) => {
+			state.calendarLayout = action.payload
+		},
 	},
 })
 
@@ -51,7 +59,8 @@ export const {
 	switchPreviousWeek,
 	switchToCurrentWeek,
 	setVisibleWeek,
-	setFocusedDate
+	setFocusedDate,
+	switchCalendarLayout
 } = calendarSlice.actions
 
 export default calendarSlice.reducer

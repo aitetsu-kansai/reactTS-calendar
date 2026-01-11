@@ -1,4 +1,4 @@
-import { Calendar } from '@heroui/react'
+import { Input } from '@heroui/react'
 import { FC } from 'react'
 import { useAppSelector } from '../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../redux/slices/uiSlice'
@@ -10,22 +10,32 @@ const RightSidebar: FC = () => {
 
 	return (
 		<>
-			<div className='flex flex-col'>
+			<div className='mt-[20px]'>
 				<Sidebar visible={isRightSidebarVisible}>
-					<>
-						<Calendar
-							weekdayStyle='short'
-							color='foreground'
-							className='overflow-y-hidden overflow-x-hidden scale-85'
-							classNames={{
-								headerWrapper: 'bg-[#27272C] border-b-1 border-[#27272C]',
-								header: 'bg-[#27272A]',
-								gridHeader: 'bg-[#27272A]',
-								content: 'bg-component-bg',
-							}}
-							aria-label='Date (Controlled Focused Value)'
-						/>
-					</>
+					<Input
+						className='w-50'
+						aria-label='Search an event'
+						placeholder='Search an event'
+						size='md'
+						variant='bordered'
+						radius='full'
+						classNames={{
+							mainWrapper: 'h-10',
+							inputWrapper: [
+								'h-10',
+								'min-h-10',
+								'px-4',
+								'border-1',
+								'border-default-300',
+								'data-[hover=true]:border-default-400',
+								'group-data-[focus=true]:border-default-foreground',
+								'group-data-[focus=true]:shadow-xs',
+								'shadow-xs',
+							].join(' '),
+							input: 'text-sm placeholder:text-default-500',
+							label: 'text-foreground/60 text-sm',
+						}}
+					/>
 				</Sidebar>
 			</div>
 		</>

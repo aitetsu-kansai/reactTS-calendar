@@ -1,4 +1,4 @@
-import { selectCalendar } from '../../../redux/slices/calendarReducer'
+import { selectCalendar } from '../../../redux/slices/calendarSlice'
 import { useAppSelector } from '../../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../../redux/slices/uiSlice'
 import { getDatesOfISOWeek } from '../../../utils/calendarHelpers'
