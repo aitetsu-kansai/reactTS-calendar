@@ -47,12 +47,15 @@ const LeftSidebar: FC = () => {
 	}
 
 	useEffect(() => {
+		if (focusedDate !== null) return
 		const initialCalendarDate = getDateValueFromWeek(visibleWeek, currentYear) //CD
 		const { year, month, day } = initialCalendarDate
 		const c = new Date(Date.UTC(year, month - 1, day)).toISOString()
 
 		dispatch(setFocusedDate(c))
 	}, [visibleWeek, currentYear])
+
+	// let [value, setValue] = useState<DateValue | null>(parseDate('2024-03-07'))
 
 	return (
 		<>
@@ -61,27 +64,33 @@ const LeftSidebar: FC = () => {
 					<Calendar
 						weekdayStyle='short'
 						color='foreground'
-						// className='scale-85 overflow-y-hidden overflow-x-hidden'
 						className='scale-85 overflow-hidden' // ← фиксированная ширина
 						aria-label='Date (Controlled Focused Value)'
-						value={
-							focusedDate !== null
-								? toCalendarDate(new Date(focusedDate))
-								: null
-						}
 						classNames={{
 							headerWrapper: 'bg-[#27272C] border-b-1 border-[#27272C]',
 							header: 'bg-[#27272A]',
 							gridHeader: 'bg-[#27272A]',
 							content: 'bg-component-bg',
 						}}
-						onChange={date => {
+						value={
+							focusedDate !== null
+								? toCalendarDate(new Date(focusedDate))
+								: null
+						}
+						onChange={(date: any) => {
 							const jsDate = toDate(date)
 							console.log(focusedDate)
 							console.log(currentDate)
+							// const a = parseDate(date)
+							// console.log(a)
 							dispatch(setFocusedDate(jsDate.toISOString()))
 							dispatch(setVisibleWeek(getWeekNumber(jsDate)))
 						}}
+						// value={value}
+						// onChange={val => {
+						// 	console.log(val.toString())
+						// 	setValue(val)
+						// }}
 					/>
 					<Divider className='my-2' />
 				</Sidebar>
