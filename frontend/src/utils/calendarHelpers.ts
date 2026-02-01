@@ -2,13 +2,19 @@ import { CalendarDate } from '@internationalized/date'
 
 export const getWeekNumber = (date: Date): number => {
 	const temp = new Date(
-		Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+		Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()),
 	)
 	const dayNum = temp.getUTCDay() || 7
 
 	temp.setUTCDate(temp.getUTCDate() + 4 - dayNum)
 	const yearStart = new Date(Date.UTC(temp.getUTCFullYear(), 0, 1))
 	return Math.ceil(((+temp - +yearStart) / 86400000 + 1) / 7)
+}
+
+export const getWeekNumberFromCalendarDate = (date: CalendarDate): number => {
+	const jsDate = new Date(Date.UTC(date.year, date.month - 1, date.day))
+
+	return getWeekNumber(jsDate)
 }
 
 export const getDatesOfISOWeek = (week: number, year: number): Date[] => {
@@ -62,7 +68,7 @@ export const toCalendarDate = (date: Date): CalendarDate => {
 	return new CalendarDate(
 		date.getFullYear(),
 		date.getMonth() + 1,
-		date.getDate()
+		date.getDate(),
 	)
 }
 

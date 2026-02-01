@@ -16,6 +16,7 @@ const config = {
 			colors: {
 				// 'component-bg': '#111113',
 				'component-bg': '#0c0c0cff',
+				'accent-color': "#ecedee",
 				'custom-secondary': 'red',
 				content1: '#111111ff',
 			},

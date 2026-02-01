@@ -5,13 +5,14 @@
 	font-family: 'Roboto Mono', sans-serif;
 }
 
-:root {
-	/* Основные переменные HeroUI для инпутов */
+[data-today],
+[data-today][data-selected] {
+	background-color: #ecedee;
+	color: black;
+}
 
-	/* --heroui-content1: #111111ff; */
-	/* --heroui-background: 12, 12, 12; */
-
-	/* Специфические для инпутов (если такие есть) */
-	/* --heroui-input-bg: #505050; */
-	/* --heroui-input-border: 45, 45, 48; */
+[data-selected] {
+	background-color: transparent;
+	border: 1px #ecedee solid;
+	color: #ecedee;
 }

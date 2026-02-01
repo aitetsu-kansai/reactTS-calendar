@@ -1,3 +1,4 @@
+import { calendar } from '@heroui/react'
 import { selectCalendar } from '../../../redux/slices/calendarSlice'
 import { useAppSelector } from '../../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../../redux/slices/uiSlice'
@@ -21,6 +22,8 @@ const Calendar = () => {
 				<div></div>
 				{days.map(el => {
 					const calendarDate = el.toLocaleDateString('sv-SV')
+					console.log(el);
+					
 					const [currentDateWithoutTime] = currentDate.split('T')
 					return (
 						<div

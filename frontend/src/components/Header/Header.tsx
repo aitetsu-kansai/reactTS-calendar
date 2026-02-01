@@ -16,6 +16,8 @@ import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { TCalendarLayout } from '../../../../share/types/calendar'
 import {
 	selectCalendar,
+	setFocusedDate,
+	setSidebarFocusedDate,
 	switchCalendarLayout,
 	switchNextWeek,
 	switchPreviousWeek,
@@ -33,7 +35,7 @@ const Header: FC = () => {
 
 	const months = getMonthsOfWeek(current.visibleWeek, current.currentYear)
 	const years = getYearOfWeek(current.visibleWeek, current.currentYear)
-
+	const currentDate = current.currentDate
 	const toggleSidebarHandler = (direction: 'left' | 'right') => {
 		dispatch(toggleSidebar(direction))
 	}
@@ -48,6 +50,8 @@ const Header: FC = () => {
 
 	const handleCurrentWeek = () => {
 		dispatch(switchToCurrentWeek())
+		dispatch(setFocusedDate(currentDate))
+		dispatch(setSidebarFocusedDate(currentDate))
 	}
 
 	const visibleMonthAndYear =
@@ -98,26 +102,26 @@ const Header: FC = () => {
 					>
 						Today
 					</Button>
-						<Button
-							className='border-1'
-							isIconOnly
-							onPress={handlePreviousWeek}
-							variant='bordered'
-							radius='full'
-							size='md'
-						>
-							<IoIosArrowBack />
-						</Button>
-						<Button
-							className='border-1'
-							isIconOnly
-							onPress={handleNextWeek}
-							variant='bordered'
-							radius='full'
-							size='md'
-						>
-							<IoIosArrowForward />
-						</Button>
+					<Button
+						className='border-1'
+						isIconOnly
+						onPress={handlePreviousWeek}
+						variant='bordered'
+						radius='full'
+						size='md'
+					>
+						<IoIosArrowBack />
+					</Button>
+					<Button
+						className='border-1'
+						isIconOnly
+						onPress={handleNextWeek}
+						variant='bordered'
+						radius='full'
+						size='md'
+					>
+						<IoIosArrowForward />
+					</Button>
 				</NavbarItem>
 				<NavbarItem>
 					<h3 className='text-xl'>{visibleMonthAndYear}</h3>

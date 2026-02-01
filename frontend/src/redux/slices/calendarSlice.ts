@@ -7,15 +7,17 @@ import { getWeekNumber } from '../../utils/calendarHelpers'
 import { RootState } from '../store'
 
 const today = new Date()
+const todayDate = today.toISOString().slice(0, 10)
 
-const initialState: TCalendarInfo<string> = {
-	currentDate: today.toISOString(),
+const initialState: TCalendarInfo = {
+	currentDate: todayDate,
 	currentDay: today.getDate(),
 	currentYear: today.getFullYear(),
 	currentMonth: today.toLocaleDateString('en-EN', { month: 'long' }),
 	visibleMonth: 1,
 	visibleWeek: getWeekNumber(today),
-	focusedDate: null,
+	sidebarFocusedDate: todayDate,
+	focusedDate: todayDate,
 	calendarLayout: 'week',
 }
 
@@ -26,7 +28,7 @@ const calendarSlice = createSlice({
 		//calendar control
 		switchNextWeek: (
 			state,
-			{ payload = 1 }: PayloadAction<number | undefined>
+			{ payload = 1 }: PayloadAction<number | undefined>,
 		) => {
 			state.visibleWeek += payload
 		},
@@ -35,7 +37,7 @@ const calendarSlice = createSlice({
 		},
 		switchPreviousWeek: (
 			state,
-			{ payload = 1 }: PayloadAction<number | undefined>
+			{ payload = 1 }: PayloadAction<number | undefined>,
 		) => {
 			state.visibleWeek -= payload
 		},
@@ -46,7 +48,9 @@ const calendarSlice = createSlice({
 		setFocusedDate: (state, action: PayloadAction<string>) => {
 			state.focusedDate = action.payload
 		},
-
+		setSidebarFocusedDate: (state, action: PayloadAction<string>) => {
+			state.sidebarFocusedDate = action.payload
+		},
 		switchCalendarLayout: (state, action: PayloadAction<TCalendarLayout>) => {
 			state.calendarLayout = action.payload
 		},
@@ -60,7 +64,8 @@ export const {
 	switchToCurrentWeek,
 	setVisibleWeek,
 	setFocusedDate,
-	switchCalendarLayout
+	switchCalendarLayout,
+	setSidebarFocusedDate
 } = calendarSlice.actions
 
 export default calendarSlice.reducer

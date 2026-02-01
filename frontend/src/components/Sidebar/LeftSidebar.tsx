@@ -1,61 +1,41 @@
-import { Calendar, Divider } from '@heroui/react'
-import { CalendarDate } from '@internationalized/date'
-import { FC, useEffect } from 'react'
+import { Calendar, DateValue, Divider } from '@heroui/react'
+import { parseDate } from '@internationalized/date'
+import { FC, useEffect, useState } from 'react'
 import {
 	selectCalendar,
 	setFocusedDate,
+	setSidebarFocusedDate,
 	setVisibleWeek,
 } from '../../redux/slices/calendarSlice'
 import { useAppDispatch, useAppSelector } from '../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../redux/slices/uiSlice'
-import {
-	getWeekNumber,
-	toCalendarDate,
-	toDate,
-} from '../../utils/calendarHelpers'
+import { getWeekNumberFromCalendarDate } from '../../utils/calendarHelpers'
 import Sidebar from './Sidebar'
 
 const LeftSidebar: FC = () => {
 	const dispatch = useAppDispatch()
-	const { focusedDate, currentDay, currentDate } =
+	const { focusedDate, currentDate, sidebarFocusedDate } =
 		useAppSelector(selectCalendar)
-
-	// const [focusedDate, setFocusedDate] = useState<DateValue | null>(null)
-	// const weekNum = getWeekNumber(focusedDate?.toDate)
 
 	const isLeftSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isLeftSidebarVisible
 
-	const { currentYear, visibleWeek } = useAppSelector(selectCalendar)
+	const [focusedValue, setFocusedValue] = useState<DateValue | null>(
+		parseDate(currentDate),
+	)
 
-	const getDateValueFromWeek = (
-		weekNumber: number,
-		year: number
-	): CalendarDate => {
-		const jan4 = new Date(Number(year), 0, 4)
-
-		const firstMonday = new Date(jan4)
-		firstMonday.setDate(jan4.getDate() - (jan4.getDay() || 7) + 1)
-		const targetDate = new Date(firstMonday)
-		targetDate.setDate(firstMonday.getDate() + (Number(weekNumber) - 1) * 7)
-
-		return new CalendarDate(
-			targetDate.getFullYear(),
-			targetDate.getMonth() + 1,
-			targetDate.getDate()
-		)
-	}
-
+	//initialization
 	useEffect(() => {
 		if (focusedDate !== null) return
-		const initialCalendarDate = getDateValueFromWeek(visibleWeek, currentYear) //CD
-		const { year, month, day } = initialCalendarDate
-		const c = new Date(Date.UTC(year, month - 1, day)).toISOString()
+		dispatch(setFocusedDate(currentDate))
+		setFocusedValue(parseDate(currentDate))
+	}, [])
 
-		dispatch(setFocusedDate(c))
-	}, [visibleWeek, currentYear])
-
-	// let [value, setValue] = useState<DateValue | null>(parseDate('2024-03-07'))
+	//calendar focus
+	useEffect(() => {
+		if (!sidebarFocusedDate) return
+		setFocusedValue(parseDate(sidebarFocusedDate))
+	}, [sidebarFocusedDate])
 
 	return (
 		<>
@@ -64,7 +44,7 @@ const LeftSidebar: FC = () => {
 					<Calendar
 						weekdayStyle='short'
 						color='foreground'
-						className='scale-85 overflow-hidden' // ← фиксированная ширина
+						className='scale-85 overflow-hidden'
 						aria-label='Date (Controlled Focused Value)'
 						classNames={{
 							headerWrapper: 'bg-[#27272C] border-b-1 border-[#27272C]',
@@ -72,26 +52,17 @@ const LeftSidebar: FC = () => {
 							gridHeader: 'bg-[#27272A]',
 							content: 'bg-component-bg',
 						}}
-						value={
-							focusedDate !== null
-								? toCalendarDate(new Date(focusedDate))
-								: null
-						}
-						onChange={(date: any) => {
-							const jsDate = toDate(date)
-							console.log(focusedDate)
-							console.log(currentDate)
-							// const a = parseDate(date)
-							// console.log(a)
-							dispatch(setFocusedDate(jsDate.toISOString()))
-							dispatch(setVisibleWeek(getWeekNumber(jsDate)))
+						value={parseDate(sidebarFocusedDate)}
+						onChange={val => {
+							const isoVal = val.toString()
+							dispatch(setVisibleWeek(getWeekNumberFromCalendarDate(val)))
+							dispatch(setFocusedDate(isoVal))
+							dispatch(setSidebarFocusedDate(val.toString()))
 						}}
-						// value={value}
-						// onChange={val => {
-						// 	console.log(val.toString())
-						// 	setValue(val)
-						// }}
+						focusedValue={focusedValue}
+						onFocusChange={setFocusedValue}
 					/>
+
 					<Divider className='my-2' />
 				</Sidebar>
 			</div>
