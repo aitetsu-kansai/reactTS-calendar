@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
+import calendarReducer from './slices/calendarSlice'
 import contactsReducer from './slices/contactsSlice'
 import infoReducer from './slices/infoSlice'
 import uiReducer from './slices/uiSlice'
@@ -8,6 +9,7 @@ const store = configureStore({
 		ui: uiReducer,
 		contacts: contactsReducer,
 		info: infoReducer,
+		calendar: calendarReducer,
 	},
 })
 

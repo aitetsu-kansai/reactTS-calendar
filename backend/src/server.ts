@@ -4,6 +4,7 @@ import path from 'path'
 import config from './config/config'
 import connectDB from './config/db'
 import contactRoutes from './routes/contactRoutes'
+import eventRoutes from './routes/eventRoutes'
 
 connectDB()
 
@@ -18,3 +19,4 @@ app.listen(config.port, () =>
 app.use('/uploads', express.static(path.join(__dirname, './storage/public')))
 
 app.use('/contacts', contactRoutes)
+app.use('/events', eventRoutes)

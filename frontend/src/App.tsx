@@ -1,5 +1,6 @@
 import './App.css'
 import Header from './components/Header/Header'
+import Calendar from './components/Main/Calendar/Calendar'
 import LeftSidebar from './components/Sidebar/LeftSidebar'
 import RightSidebar from './components/Sidebar/RightSidebar'
 import { useAppSelector } from './redux/slices/hooks'
@@ -11,21 +12,23 @@ function App() {
 	const isRightSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isRightSidebarVisible
 	return (
-		<div className='h-screen w-screen overflow-x-hidden'>
+		<div className='h-screen w-screen flex flex-col'>
 			<Header />
-			<div className='flex h-screen w-screen'>
+			<div className='flex overflow-hidden'>
 				<div
 					className={`
-						transition-all duration-300 ease-in-out overflow-hidden
-						${isLeftSidebarVisible ? 'max-w-[40%] w-100' : 'max-w-0 w-0'}
+						transition-all duration-400 ease
+						${isLeftSidebarVisible ? 'max-w-[30%] w-70' : 'max-w-0 w-0'}
 					`}
 				>
 					<LeftSidebar />
 				</div>
-				<div className='w-full text-left bg-blue-500'>Основная часть</div>
+				<div className={`w-full mt-5 mb-5`}>
+					<Calendar />
+				</div>
 				<div
 					className={`
-						transition-all duration-300 ease-in-out overflow-hidden
+						transition-all duration-400 ease overflow-hidden
 						${isRightSidebarVisible ? 'max-w-[20%] w-1/5' : 'max-w-0 w-0'}
 					
 					`}

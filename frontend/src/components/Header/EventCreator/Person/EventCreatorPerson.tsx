@@ -37,6 +37,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 	const isEditable = mode === 'create' || isEditing
 	const isFormDisabled = mode === 'edit' ? !isEditing : false
 	const inputVariant = mode === 'edit' ? 'underlined' : 'flat'
+
 	const dispatch = useAppDispatch()
 
 	const [avatarFile, setAvatarFile] = useState<File | null>(null)
@@ -85,6 +86,14 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 				if (value !== null && value !== undefined) formData.append(key, value)
 			}
 			dispatch(createContact(formData))
+			setContactData({
+				username: '',
+				email: '',
+				phone: '',
+				dateAdded: '',
+				date: '',
+				avatar: '',
+			})
 		} else if (mode === 'edit') {
 			const changedFields = Object.fromEntries(
 				Object.entries(contactData).filter(
@@ -104,6 +113,7 @@ const EventCreatorPerson: FC<Props> = ({ formRef, mode, isEditing, data }) => {
 	return (
 		<>
 			<div className='flex flex-wrap gap-4 justify-center'>
+				
 				{(mode === 'create' || isEditable) && (
 					<UploadableAvatar
 						avatarUrl={contactData.avatar || ''}

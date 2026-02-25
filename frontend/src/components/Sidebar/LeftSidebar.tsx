@@ -1,28 +1,96 @@
-import type { DateValue } from '@heroui/react'
 import { Calendar, Divider } from '@heroui/react'
-import { FC, useState } from 'react'
-import { useAppSelector } from '../../redux/slices/hooks'
+import { CalendarDate } from '@internationalized/date'
+import { FC, useEffect } from 'react'
+import {
+	selectCalendar,
+	setFocusedDate,
+	setVisibleWeek,
+} from '../../redux/slices/calendarSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../redux/slices/uiSlice'
-import { getDate } from '../../utils/getDate'
+import {
+	getWeekNumber,
+	toCalendarDate,
+	toDate,
+} from '../../utils/calendarHelpers'
 import Sidebar from './Sidebar'
 
 const LeftSidebar: FC = () => {
-	const defaultDate = getDate()
-	const [focusedDate, setFocusedDate] = useState<DateValue | null>(defaultDate)
+	const dispatch = useAppDispatch()
+	const { focusedDate, currentDay, currentDate } =
+		useAppSelector(selectCalendar)
+
+	// const [focusedDate, setFocusedDate] = useState<DateValue | null>(null)
+	// const weekNum = getWeekNumber(focusedDate?.toDate)
+
 	const isLeftSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isLeftSidebarVisible
 
+	const { currentYear, visibleWeek } = useAppSelector(selectCalendar)
+
+	const getDateValueFromWeek = (
+		weekNumber: number,
+		year: number
+	): CalendarDate => {
+		const jan4 = new Date(Number(year), 0, 4)
+
+		const firstMonday = new Date(jan4)
+		firstMonday.setDate(jan4.getDate() - (jan4.getDay() || 7) + 1)
+		const targetDate = new Date(firstMonday)
+		targetDate.setDate(firstMonday.getDate() + (Number(weekNumber) - 1) * 7)
+
+		return new CalendarDate(
+			targetDate.getFullYear(),
+			targetDate.getMonth() + 1,
+			targetDate.getDate()
+		)
+	}
+
+	useEffect(() => {
+		if (focusedDate !== null) return
+		const initialCalendarDate = getDateValueFromWeek(visibleWeek, currentYear) //CD
+		const { year, month, day } = initialCalendarDate
+		const c = new Date(Date.UTC(year, month - 1, day)).toISOString()
+
+		dispatch(setFocusedDate(c))
+	}, [visibleWeek, currentYear])
+
+	// let [value, setValue] = useState<DateValue | null>(parseDate('2024-03-07'))
+
 	return (
 		<>
-			<div className='flex flex-col'>
+			<div className='flex flex-col items-center text-center'>
 				<Sidebar visible={isLeftSidebarVisible}>
 					<Calendar
-						showMonthAndYearPickers
-						className='scale-85 overflow-y-hidden overflow-x-hidden max-w-100 '
-						value={defaultDate}
+						weekdayStyle='short'
+						color='foreground'
+						className='scale-85 overflow-hidden' // ← фиксированная ширина
 						aria-label='Date (Controlled Focused Value)'
-						focusedValue={focusedDate}
-						onFocusChange={setFocusedDate}
+						classNames={{
+							headerWrapper: 'bg-[#27272C] border-b-1 border-[#27272C]',
+							header: 'bg-[#27272A]',
+							gridHeader: 'bg-[#27272A]',
+							content: 'bg-component-bg',
+						}}
+						value={
+							focusedDate !== null
+								? toCalendarDate(new Date(focusedDate))
+								: null
+						}
+						onChange={(date: any) => {
+							const jsDate = toDate(date)
+							console.log(focusedDate)
+							console.log(currentDate)
+							// const a = parseDate(date)
+							// console.log(a)
+							dispatch(setFocusedDate(jsDate.toISOString()))
+							dispatch(setVisibleWeek(getWeekNumber(jsDate)))
+						}}
+						// value={value}
+						// onChange={val => {
+						// 	console.log(val.toString())
+						// 	setValue(val)
+						// }}
 					/>
 					<Divider className='my-2' />
 				</Sidebar>

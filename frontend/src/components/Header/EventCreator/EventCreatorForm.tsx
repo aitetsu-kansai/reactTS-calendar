@@ -1,5 +1,5 @@
 import { Card, CardBody, Tab, Tabs } from '@heroui/react'
-import { FC, Key, useState } from 'react'
+import { FC, Key, useMemo, useState } from 'react'
 import { useAppDispatch } from '../../../redux/slices/hooks'
 import { toggleFormTab } from '../../../redux/slices/uiSlice'
 import EventCreatorEvent from './Event/EventCreatorEvent'
@@ -19,27 +19,32 @@ const EventCreatorForm: FC<Props> = ({ formRef }) => {
 		setSelected(tabKey)
 		dispatch(toggleFormTab(tabKey))
 	}
+	console.log('11111')
 
-	let tabs = [
-		{
-			id: 'event',
-			label: 'Event',
-			content: <EventCreatorEvent formRef={formRef} />,
-		},
-		{
-			id: 'person',
-			label: 'Person',
-			content: <EventCreatorPerson mode='create' formRef={formRef} />,
-		},
-	]
+	let tabs = useMemo(
+		() => [
+			{
+				id: 'event',
+				label: 'Event',
+				content: <EventCreatorEvent formRef={formRef} />,
+			},
+			{
+				id: 'person',
+				label: 'Person',
+				content: <EventCreatorPerson mode='create' formRef={formRef} />,
+			},
+		],
+		[formRef]
+	)
 
 	return (
-		<div className='flex w-full flex-col'>
+		<div className='flex w-full flex-col bg-component-bg'>
 			<Tabs
 				aria-label='Dynamic tabs'
 				items={tabs}
 				selectedKey={selected}
 				onSelectionChange={handleOnSelectionChange}
+				disableAnimation={false}
 			>
 				{item => (
 					<Tab key={item.id} title={item.label}>

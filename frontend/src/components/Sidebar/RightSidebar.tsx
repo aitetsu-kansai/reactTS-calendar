@@ -1,6 +1,5 @@
 import { Input } from '@heroui/react'
 import { FC } from 'react'
-import { CiSearch } from 'react-icons/ci'
 import { useAppSelector } from '../../redux/slices/hooks'
 import { selectSidebarsStatus } from '../../redux/slices/uiSlice'
 import Sidebar from './Sidebar'
@@ -8,22 +7,34 @@ import Sidebar from './Sidebar'
 const RightSidebar: FC = () => {
 	const isRightSidebarVisible =
 		useAppSelector(selectSidebarsStatus).isRightSidebarVisible
+
 	return (
 		<>
-			<div className='flex flex-col'>
+			<div className='mt-[20px]'>
 				<Sidebar visible={isRightSidebarVisible}>
 					<Input
-						classNames={{
-							base: 'max-w-full sm:max-w-[10rem] h-10 text-center mx-auto pt-5',
-							mainWrapper: 'h-full',
-							input: 'text-small',
-							inputWrapper:
-								'h-full font-normal text-default-500 bg-default-400/20',
-						}}
-						placeholder='Event to search...'
+						className='w-50'
+						aria-label='Search an event'
+						placeholder='Search an event'
 						size='md'
-						startContent={<CiSearch size={18} />}
-						type='search'
+						variant='bordered'
+						radius='full'
+						classNames={{
+							mainWrapper: 'h-10',
+							inputWrapper: [
+								'h-10',
+								'min-h-10',
+								'px-4',
+								'border-1',
+								'border-default-300',
+								'data-[hover=true]:border-default-400',
+								'group-data-[focus=true]:border-default-foreground',
+								'group-data-[focus=true]:shadow-xs',
+								'shadow-xs',
+							].join(' '),
+							input: 'text-sm placeholder:text-default-500',
+							label: 'text-foreground/60 text-sm',
+						}}
 					/>
 				</Sidebar>
 			</div>

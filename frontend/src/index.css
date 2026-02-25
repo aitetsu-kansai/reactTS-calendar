@@ -1,3 +1,17 @@
 @import 'tailwindcss';
 @config "../tailwind.config.js";
 
+* {
+	font-family: 'Roboto Mono', sans-serif;
+}
+
+:root {
+	/* Основные переменные HeroUI для инпутов */
+
+	/* --heroui-content1: #111111ff; */
+	/* --heroui-background: 12, 12, 12; */
+
+	/* Специфические для инпутов (если такие есть) */
+	/* --heroui-input-bg: #505050; */
+	/* --heroui-input-border: 45, 45, 48; */
+}
